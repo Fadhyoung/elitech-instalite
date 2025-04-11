@@ -1,20 +1,35 @@
-{{-- resources/views/feeds.blade.php --}}
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Feeds') }}
+        </h2>
+    </x-slot>
 
-@section('content')
-    <div class="container">
-        <div class="row">
-            @foreach ($feeds as $feed)
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <img src="{{ asset('storage/'.$feed->media_path) }}" class="card-img-top" alt="Feed Image">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $feed->caption }}</h5>
-                            <p class="card-text">{{ $feed->user->profile->username }}</p>
-                        </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <h1 class="text-2xl font-bold mb-4">All Feeds</h1>
+
+                    @foreach ($feeds as $feed)
+                    <a href="{{ route('feeds.edit', $feed) }}" class="text-blue-500">Edit</a>
+
+                    <form action="{{ route('feeds.destroy', $feed->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-500 ml-2" onclick="return confirm('Are you sure? want to delete data id')">Delete</button>
+                    </form>
+
+                    <div class="border rounded p-4 mb-20 shadow-sm">
+                        <h2 class="font-semibold">{{ $feed->username }}</h2>
+                        <p class="text-gray-700">{{ $feed->caption }}</p>
+                        @if ($feed->media_path)
+                        <img src="{{ asset('storage/' . $feed->media_path) }}" alt="Feed Image" class="mt-2 w-64">
+                        @endif
                     </div>
+                    @endforeach
                 </div>
-            @endforeach
+            </div>
         </div>
     </div>
-@endsection
+</x-app-layout>

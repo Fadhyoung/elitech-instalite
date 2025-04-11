@@ -25,7 +25,8 @@ class FeedController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'media' => 'required|file|mimes:jpg,jpeg,png,mp4|max:10240',
+            'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4|max:10240',
+            'media_type' => 'required|file|mimes:jpg,jpeg,png,mp4|max:10240',
             'caption' => 'nullable|string|max:255',
         ]);
 
@@ -42,5 +43,45 @@ class FeedController extends Controller
 
         return redirect()->route('feeds.index')->with('success', 'Post created!');
     }
-}
 
+    public function show(Feed $feed)
+    {
+        return view('feeds.show', compact('feed'));
+    }
+
+    public function edit(Feed $feed)
+    {
+        return view('feeds.edit', compact('feed'));
+    }
+
+    public function update(Request $request, Feed $feed)
+    {
+        $request->validate([
+            'media_path' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov,avi,webm|max:20480',
+            'media_type' => 'nullable|string',
+            'caption' => 'nullable|string',
+        ]);
+
+        if ($request->hasFile('media_path')) {
+            $path = $request->file('media_path')->store('uploads', 'public');
+            $feed->media_path = $path;
+
+            $mime = $request->file('media_path')->getMimeType();
+            $feed->media_type = str_contains($mime, 'video') ? 'video' : 'photo';
+        }
+
+        $feed->caption = $request->caption;
+
+        $feed->save();
+
+        return redirect()->route('feeds.index')->with('success', 'Feed updated!');
+    }
+
+    public function destroy($id)
+    {
+        $feed = Feed::findOrFail($id);  // Find the feed by ID
+        $feed->delete();  // Delete the feed from the database
+
+        return redirect()->route('feeds.index')->with('success', 'Feed deleted successfully');
+    }
+}
