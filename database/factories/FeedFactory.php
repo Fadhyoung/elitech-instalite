@@ -15,9 +15,10 @@ class FeedFactory extends Factory
     public function definition(): array
     {
         return [
-            'media_path' => 'uploads/' . $this->faker->uuid . '.jpg',
+            'media_path' => 'uploads/8edea7cd-f787-3e20-8c92-14b82ad58668.jpg',
             'media_type' => $this->faker->randomElement(['photo', 'video']),
             'caption' => $this->faker->sentence(),
+            'archived' => $this->faker->boolean(30),
         ];
     }
 }

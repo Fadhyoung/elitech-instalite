@@ -58,8 +58,4 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
-    
-    Route::get('/feeds', [FeedController::class, 'index'])->name('feeds.index');
-    Route::get('/feeds/create', [FeedController::class, 'create'])->name('feeds.create');
-    Route::post('/feeds', [FeedController::class, 'store'])->name('feeds.store');
 });

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('media_path');
             $table->string('media_type');
             $table->text('caption')->nullable();
+            $table->boolean('archived');
             $table->timestamps();
         });
     }
