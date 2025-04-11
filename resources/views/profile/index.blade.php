@@ -2,69 +2,26 @@
     <div class="py-4 flex flex-col min-h-screen bg-white">
 
         {{-- Profile Header --}}
-        <div class="container max-w-4xl mx-auto px-4 py-6 space-y-10">
-            <div class="px-10 flex gap-20 md:flex-row items-center">
+        @include('profile.partials.profile-bar')
 
-                {{-- Profile Picture --}}
-                <div class="relative">
-                    <div class="w-20 h-20 md:w-36 md:h-36 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-300 flex items-center justify-center">
-                        @if (auth()->user()->photo_profile)
-                        <img src="{{ asset('storage/' . $user->photo_profile) }}" alt="Profile Photo" class="w-full h-full object-cover">
-                        @else
-                        <svg class="w-8 h-8 text-gray-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" fill="#6B7280" />
-                            <path d="M12 13C7.58172 13 4 16.5817 4 21H20C20 16.5817 16.4183 13 12 13Z" fill="#6B7280" />
-                        </svg>
-                        @endif
-                    </div>
-                </div>
+        <div
+            x-data="{
+                activeTab: 'posts',
+                selectedFeed: null,
+                showModal: false,
+                openModal(feed) {
+                    this.selectedFeed = feed;
+                    this.showModal = true;
+                },
+                closeModal() {
+                    this.showModal = false;
+                    this.selectedFeed = null;
+                }
+            }"
 
-                {{-- Profile Info --}}
-                <div class="flex flex-col w-full">
-                    <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
-                        <h1 class="text-xl font-normal">{{ Auth::user()->username ?? 'username' }}</h1>
-                        <div class="flex gap-2">
-                            <button onclick="window.location.href='/setting'" class="h-9 px-4 rounded-lg text-sm font-semibold border border-gray-300 bg-gray-100">Edit profile</button>
-                            <button href="#" class="h-9 px-4 rounded-lg text-sm font-semibold border border-gray-300 bg-gray-100">View archive</button>
-                            <button
-                                onclick="window.location.href='/setting'"
-                                class="h-9 w-9 rounded-full flex items-center justify-center">
-                                <x-iconoir-settings class="h-5 w-5" />
-                            </button>
-                        </div>
-                    </div>
+            class="w-full max-w-4xl mx-auto mt-10">
 
-                    {{-- Stats --}}
-                    <div class="flex justify-center md:justify-start gap-8 my-4">
-                        <div class="flex gap-1">
-                            <span class="font-semibold">0</span> posts
-                        </div>
-                        <div class="flex gap-1">
-                            <span class="font-semibold">5</span> followers
-                        </div>
-                        <div class="flex gap-1">
-                            <span class="font-semibold">30</span> following
-                        </div>
-                    </div>
-
-                    {{-- Name --}}
-                    <div class="text-center md:text-left">
-                        <h2 class="font-semibold">{{ Auth::user()->bio }}</h2>
-                    </div>
-                </div>
-            </div>
-
-            {{-- New Post Button --}}
-            <div class="flex justify-start">
-                <button href="{{ route('feeds.create') }}" class="rounded-full size-20 flex flex-col items-center justify-center gap-1 border">
-                    <x-iconoir-plus class="h-6 w-6 text-gray-400" />
-                    <span class="text-xs">New</span>
-                </button>
-            </div>
-        </div>
-
-        <div x-data="{ activeTab: 'posts' }" class="w-full max-w-4xl mx-auto mt-10">
-            <!-- Tabs Navigation -->
+            <!-- Tabs Navigation -->selectedFeed
             <div class="flex w-full justify-center border-b">
                 <button
                     @click="activeTab = 'posts'"
@@ -95,12 +52,15 @@
             <div x-show="activeTab === 'posts'" class="w-full py-5 grid grid-cols-3 gap-2">
                 @forelse ($feeds as $feed)
                 @if (!$feed->archived)
-                <div class="w-full relative aspect-square bg-gray-100">
+                <button
+                    class="w-full relative aspect-square bg-gray-100"
+                    @click="openModal(@js($feed))">
                     <img
                         src="{{ asset('storage/' . $feed->media_path) ?? '/placeholder.svg' }}"
                         alt="Post {{ $feed->id }}"
                         class="w-full h-full object-cover" />
-                </div>
+                </button>
+
                 @endif
                 @empty
                 <p class="text-center col-span-3">No posts available.</p>
@@ -111,12 +71,12 @@
             <div x-show="activeTab === 'archived'" class="w-full py-5 grid grid-cols-3 gap-2">
                 @forelse ($feeds as $feed)
                 @if ($feed->archived)
-                <div class="w-full relative aspect-square bg-gray-100">
+                <button class="w-full relative aspect-square bg-gray-100">
                     <img
                         src="{{ asset('storage/' . $feed->media_path) ?? '/placeholder.svg' }}"
                         alt="Archived {{ $feed->id }}"
                         class="w-full h-full object-cover" />
-                </div>
+                </button>
                 @endif
                 @empty
                 <p class="text-center col-span-3">No archived posts.</p>
@@ -190,5 +150,18 @@
                     </div>
                 </div>
             </footer>
+
+            <!-- MODAL -->
+            <div
+                x-show="showModal"
+                @click="showModal = false"
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white p-6 rounded-lg w-full max-w-lg relative" @click.stop>
+                    <p x-text="selectedFeed?.caption"></p>
+                    <button @click="closeModal" class="mt-4 text-red-500">Close</button>
+                </div>
+            </div>
+
+
         </div>
 </x-app-layout>

@@ -24,13 +24,14 @@
             accept="image/*"
             class="hidden"
             id="profilePhotoInput"
-            onchange="document.getElementById('profilePhotoForm').submit();">
+            onchange="previewProfilePhoto(this)">
+
 
         <div class="w-full mx-auto px-4 py-6 border">
             <div class="rounded-xl p-1 flex items-center">
                 <div class="size-20 rounded-full bg-gray-300 flex items-center justify-center mr-4 overflow-hidden">
                     @if (auth()->user()->photo_profile)
-                    <img src="{{ asset('storage/' . auth()->user()->photo_profile) }}" alt="Profile Photo" class="w-full h-full object-cover">
+                    <img id="profilePreview" src="{{ asset('storage/' . auth()->user()->photo_profile) }}" alt="Profile Photo" class="w-full h-full object-cover">
                     @else
                     <svg class="w-8 h-8 text-gray-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" fill="#6B7280" />
@@ -105,3 +106,18 @@
         </div>
     </form>
 </section>
+
+<script>
+    function previewProfilePhoto(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profilePreview').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+
+            // Optional: auto-submit form if you want to save instantly
+            // document.getElementById('profilePhotoForm').submit();
+        }
+    }
+</script>
