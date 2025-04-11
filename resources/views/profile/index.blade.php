@@ -139,15 +139,7 @@
             </footer>
 
             <!-- MODAL -->
-            <div
-                x-show="showModal"
-                @click="closeModal"
-                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div class="bg-white p-6 rounded-lg w-full max-w-lg relative" @click.stop>
-                    <p x-text="selectedFeed?.caption"></p>
-                    <button @click="closeModal" class="mt-4 text-red-500">Close</button>
-                </div>
-            </div>
+            @include('profile.partials.feed-modal')
 
             <!-- ALPINEJS CONFIG -->
             <!-- Modal Management with Alpine.js -->
@@ -158,21 +150,15 @@
                         activeTab: 'posts',
                         selectedFeed: null, // Start with null, and we'll load feed dynamically based on the URL.
 
-                        openModal(feedId) {
-                            // Fetch the feed data based on the feedId, either from a local variable or an API.
-                            // For simplicity, we assume you're passing a specific feed here from the server
-                            // or dynamically fetching it based on the ID in a real-world scenario.
-                            // Example of a simple feed object, replace it with actual logic:
+                        openModal(feed) {
                             this.selectedFeed = {
-                                id: feedId,
-                                caption: 'Sample Caption',
-                                media_path: 'image.jpg'
+                                id: feed.id,
+                                caption: feed.caption,
+                                media_path: feed.media_path
                             };
 
                             this.showModal = true;
-                            history.pushState({
-                                feedId: feedId
-                            }, '', `/p/${feedId}`);
+                            history.pushState({ feedId: feed.id }, '', `/p/${feed.id}`);
                         },
 
                         closeModal() {

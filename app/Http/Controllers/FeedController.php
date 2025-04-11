@@ -63,10 +63,11 @@ class FeedController extends Controller
     {
         // Fetch the feed by its ID
         $feed = Feed::findOrFail($feed_id); // Assuming your Feed model exists
+        $user = Auth::user();
 
-        // Return the same view with the selected feed's data
         return view('profile.index', [
             'feed' => $feed,
+            'user' => $user,
         ]);
     }
 
