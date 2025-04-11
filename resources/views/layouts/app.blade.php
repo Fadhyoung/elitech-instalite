@@ -15,8 +15,10 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+        <div class="min-h-screen grid grid-cols-6 bg-gray-100 dark:bg-gray-900">
+            <div class="w-1/6 h-screen fixed col-span-1 overflow-hidden bg-white">
+                @include('layouts.navigation')
+            </div>
 
             <!-- Page Heading -->
             @isset($header)
@@ -28,7 +30,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="w-full col-start-2 col-span-5">
                 {{ $slot }}
             </main>
         </div>
