@@ -16,7 +16,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen grid grid-cols-6 bg-gray-100 dark:bg-gray-900">
-            <div class="w-1/6 h-screen fixed col-span-1 overflow-hidden bg-white">
+            <div class="w-1/6 h-screen fixed col-span-1 overflow-hidden border-r bg-white">
                 @include('layouts.navigation')
             </div>
 
@@ -36,3 +36,5 @@
         </div>
     </body>
 </html>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>

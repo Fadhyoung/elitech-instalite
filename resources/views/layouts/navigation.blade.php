@@ -25,7 +25,7 @@
             </div>
             <div class="flex gap-5">
                 <x-iconoir-archive />
-                <button onclick="window.location.href='/profile'">
+                <button onclick="window.location.href='/setting'">
                     Archive
                 </button>
             </div>
@@ -42,7 +42,7 @@
             </button>
 
             <div id="customDropdown" class="absolute bottom-full mb-2 left-0 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md py-1 hidden z-50">
-                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Setting</a>
+                <a href="{{ route('setting.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Setting</a>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -79,7 +79,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link :href="route('profile.index')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
