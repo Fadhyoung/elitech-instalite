@@ -24,20 +24,24 @@ class FeedController extends Controller
     // Handle form submission and save to database
     public function store(Request $request)
     {
+        
         $request->validate([
-            'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4|max:10240',
-            'media_type' => 'required|file|mimes:jpg,jpeg,png,mp4|max:10240',
+            'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4|max:20480',
             'caption' => 'nullable|string|max:255',
         ]);
 
-        // Save file to storage
-        $mediaPath = $request->file('media')->store('uploads', 'public');
+        // Store the media file
+        $mediaFile = $request->file('media_path');
+        $mediaPath = $mediaFile->store('uploads', 'public');
 
-        // Create feed post
+        // Determine media type
+        $mediaType = str_contains($mediaFile->getMimeType(), 'video') ? 'video' : 'photo';
+
+        // Create the feed
         Feed::create([
             'user_id' => Auth::id(),
             'media_path' => $mediaPath,
-            'media_type' => str_contains($request->file('media')->getMimeType(), 'video') ? 'video' : 'photo',
+            'media_type' => $mediaType,
             'caption' => $request->caption,
         ]);
 
@@ -59,7 +63,7 @@ class FeedController extends Controller
         $request->validate([
             'media_path' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov,avi,webm|max:20480',
             'media_type' => 'nullable|string',
-            'caption' => 'nullable|string',
+            'caption' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('media_path')) {
