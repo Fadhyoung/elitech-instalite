@@ -13,6 +13,7 @@ class Feed extends Model
         'media_path',
         'media_type',
         'caption',
+        'archived',
     ];
 
     

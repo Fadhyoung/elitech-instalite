@@ -19,7 +19,7 @@
                         <div class="flex gap-2">
                             <button onclick="window.location.href='/setting'" class="h-9 px-4 rounded-lg text-sm font-semibold border border-gray-300 bg-gray-100">Edit profile</button>
                             <button href="#" class="h-9 px-4 rounded-lg text-sm font-semibold border border-gray-300 bg-gray-100">View archive</button>
-                            <button 
+                            <button
                                 onclick="window.location.href='/setting'"
                                 class="h-9 w-9 rounded-full flex items-center justify-center">
                                 <x-iconoir-settings class="h-5 w-5" />
@@ -67,8 +67,8 @@
                     <span class="uppercase text-xs font-semibold">Posts</span>
                 </button>
                 <button
-                    @click="activeTab = 'saved'"
-                    :class="activeTab === 'saved' ? 'border-b-2 border-black' : ''"
+                    @click="activeTab = 'archived'"
+                    :class="activeTab === 'archived' ? 'border-b-2 border-black' : ''"
                     class="flex items-center gap-2 px-4 py-3">
                     <x-iconoir-bookmark class="h-4 w-4" />
                     <span class="uppercase text-xs font-semibold">Archived</span>
@@ -83,30 +83,76 @@
             </div>
 
             @if ($feeds && $feeds->isNotEmpty())
-            <div class="w-full py-5 grid grid-cols-3 gap-2">
-                @foreach ($feeds as $feed)
-                <!-- Tab Content -->
+
+            <!-- POSTS TAB -->
+            <div x-show="activeTab === 'posts'" class="w-full py-5 grid grid-cols-3 gap-2">
+                @forelse ($feeds as $feed)
+                @if (!$feed->archived)
                 <div class="w-full relative aspect-square bg-gray-100">
                     <img
                         src="{{ asset('storage/' . $feed->media_path) ?? '/placeholder.svg' }}"
                         alt="Post {{ $feed->id }}"
                         class="w-full h-full object-cover" />
-                    <div class="absolute top-2 right-2 text-white">
-                        <!-- Icon here, you can replace with your own -->
-                    </div>
                 </div>
-                @endforeach
+                @endif
+                @empty
+                <p class="text-center col-span-3">No posts available.</p>
+                @endforelse
             </div>
+
+            <!-- SAVED / ARCHIVED TAB -->
+            <div x-show="activeTab === 'archived'" class="w-full py-5 grid grid-cols-3 gap-2">
+                @forelse ($feeds as $feed)
+                @if ($feed->archived)
+                <div class="w-full relative aspect-square bg-gray-100">
+                    <img
+                        src="{{ asset('storage/' . $feed->media_path) ?? '/placeholder.svg' }}"
+                        alt="Archived {{ $feed->id }}"
+                        class="w-full h-full object-cover" />
+                </div>
+                @endif
+                @empty
+                <p class="text-center col-span-3">No archived posts.</p>
+                @endforelse
+            </div>
+
+            <!-- TAGGED TAB -->
+            <div x-show="activeTab === 'tagged'" class="w-full py-5 text-center">
+                <p>On progress...</p>
+            </div>
+
             @else
             <!-- No feeds available - display empty content -->
             <div class="mt-8 px-4">
-                <div x-show="activeTab === 'posts'" class="flex flex-col items-center justify-center py-8">
-                    <div class="border border-gray-300 rounded-full p-4 mb-4">
-                        <x-iconoir-camera class="h-8 w-8 text-gray-900" />
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Share Photos</h3>
-                    <p class="text-gray-600 text-center mb-4">When you share photos, they will appear on your profile.</p>
-                    <button class="text-blue-500 font-semibold">Share your first photo</button>
+                <div x-show="activeTab === 'posts'" class="flex flex-col items-center justify-center text-center py-8">
+                    <form method="POST" action="{{ route('feeds.store') }}" enctype="multipart/form-data" id="uploadForm">
+                        @csrf
+
+                        <input
+                            type="file"
+                            name="media_path"
+                            accept="image/*,video/*"
+                            class="hidden"
+                            id="mediaInput"
+                            onchange="document.getElementById('uploadForm').submit();">
+
+                        <div class="w-fit border border-gray-300 rounded-full p-4 mb-4 justify-self-center">
+                            <x-iconoir-camera class="h-8 w-8 text-gray-900" />
+                        </div>
+
+                        <h3 class="text-2xl font-bold mb-2">Share Photos</h3>
+                        <p class="text-gray-600 text-center mb-4">
+                            When you share photos, they will appear on your profile.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="text-blue-500 font-semibold"
+                            onclick="document.getElementById('mediaInput').click();">
+                            Share your first photo
+                        </button>
+                    </form>
+
                 </div>
 
                 <div x-show="activeTab === 'saved'" class="flex flex-col items-center justify-center py-8">

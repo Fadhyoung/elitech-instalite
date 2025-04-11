@@ -18,6 +18,7 @@ class FeedFactory extends Factory
             'media_path' => 'uploads/8edea7cd-f787-3e20-8c92-14b82ad58668.jpg',
             'media_type' => $this->faker->randomElement(['photo', 'video']),
             'caption' => $this->faker->sentence(),
+            'archived' => $this->faker->boolean(30),
         ];
     }
 }

@@ -42,10 +42,11 @@ class FeedController extends Controller
             'user_id' => Auth::id(),
             'media_path' => $mediaPath,
             'media_type' => $mediaType,
-            'caption' => $request->caption,
+            'archived' => false,
+            'caption' => $request->caption ?? 'no caption',
         ]);
 
-        return redirect()->route('feeds.index')->with('success', 'Post created!');
+        return redirect()->route('profile.index')->with('success', 'Post created!');
     }
 
     public function show(Feed $feed)
