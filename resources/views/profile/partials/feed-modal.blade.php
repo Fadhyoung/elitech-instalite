@@ -2,7 +2,7 @@
     <div
         x-show="showModal"
         @click="closeModal"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" x-cloak x-transition>
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 bg-white" @click.stop>
 
             <!-- LEFT SIDE -->
