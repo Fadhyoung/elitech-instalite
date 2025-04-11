@@ -42,11 +42,17 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-
         $user = $request->user();
 
-        $user->fill($request->validated()); 
+        $user->fill($request->validated());
+
+        if ($request->hasFile('photo_profile')) {
+            $path = $request->file('photo_profile')->store('uploads', 'public');
+            $user->photo_profile = $path;
+        }
+
         $user->save();
+
 
         return Redirect::route('profile.index')->with('status', 'profile-updated');
     }

@@ -8,7 +8,14 @@
                 {{-- Profile Picture --}}
                 <div class="relative">
                     <div class="w-20 h-20 md:w-36 md:h-36 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-300 flex items-center justify-center">
-                        <x-iconoir-camera class="w-8 h-8 text-gray-500" />
+                        @if (auth()->user()->photo_profile)
+                        <img src="{{ asset('storage/' . $user->photo_profile) }}" alt="Profile Photo" class="w-full h-full object-cover">
+                        @else
+                        <svg class="w-8 h-8 text-gray-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" fill="#6B7280" />
+                            <path d="M12 13C7.58172 13 4 16.5817 4 21H20C20 16.5817 16.4183 13 12 13Z" fill="#6B7280" />
+                        </svg>
+                        @endif
                     </div>
                 </div>
 
