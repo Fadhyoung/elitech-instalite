@@ -5,20 +5,7 @@
         @include('profile.partials.profile-bar')
 
         <div
-            x-data="{
-                activeTab: 'posts',
-                selectedFeed: null,
-                showModal: false,
-                openModal(feed) {
-                    this.selectedFeed = feed;
-                    this.showModal = true;
-                },
-                closeModal() {
-                    this.showModal = false;
-                    this.selectedFeed = null;
-                }
-            }"
-
+            x-data="modalData()"
             class="w-full max-w-4xl mx-auto mt-10">
 
             <!-- Tabs Navigation -->selectedFeed
@@ -154,7 +141,7 @@
             <!-- MODAL -->
             <div
                 x-show="showModal"
-                @click="showModal = false"
+                @click="closeModal"
                 class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-full max-w-lg relative" @click.stop>
                     <p x-text="selectedFeed?.caption"></p>
@@ -162,6 +149,59 @@
                 </div>
             </div>
 
+            <!-- ALPINEJS CONFIG -->
+            <!-- Modal Management with Alpine.js -->
+            <script>
+                function modalData() {
+                    return {
+                        showModal: false,
+                        activeTab: 'posts',
+                        selectedFeed: null, // Start with null, and we'll load feed dynamically based on the URL.
+
+                        openModal(feedId) {
+                            // Fetch the feed data based on the feedId, either from a local variable or an API.
+                            // For simplicity, we assume you're passing a specific feed here from the server
+                            // or dynamically fetching it based on the ID in a real-world scenario.
+                            // Example of a simple feed object, replace it with actual logic:
+                            this.selectedFeed = {
+                                id: feedId,
+                                caption: 'Sample Caption',
+                                media_path: 'image.jpg'
+                            };
+
+                            this.showModal = true;
+                            history.pushState({
+                                feedId: feedId
+                            }, '', `/p/${feedId}`);
+                        },
+
+                        closeModal() {
+                            // Close the modal and revert the URL to the previous one
+                            this.showModal = false;
+                            history.pushState(null, '', '/profile');
+                        },
+
+                        init() {
+                            // Initialize modal state based on URL
+                            const pathParts = window.location.pathname.split('/');
+                            const feedId = pathParts[pathParts.length - 1];
+                            if (feedId && !isNaN(feedId)) {
+                                // Fetch the feed by ID (in real-world, you'd probably want to fetch it from an API or database)
+                                this.openModal(feedId);
+                            }
+
+                            // Listen for changes in the browser history (back/forward navigation)
+                            window.addEventListener('popstate', (event) => {
+                                if (event.state && event.state.feedId) {
+                                    this.openModal(event.state.feedId);
+                                } else {
+                                    this.closeModal();
+                                }
+                            });
+                        }
+                    };
+                }
+            </script>
 
         </div>
 </x-app-layout>

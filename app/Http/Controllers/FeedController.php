@@ -59,6 +59,17 @@ class FeedController extends Controller
         return view('feeds.edit', compact('feed'));
     }
 
+    public function detailFeed($feed_id)
+    {
+        // Fetch the feed by its ID
+        $feed = Feed::findOrFail($feed_id); // Assuming your Feed model exists
+
+        // Return the same view with the selected feed's data
+        return view('profile.index', [
+            'feed' => $feed,
+        ]);
+    }
+
     public function update(Request $request, Feed $feed)
     {
         $request->validate([
