@@ -15,6 +15,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/setting', [SettingController::class, 'edit'])->name('setting.edit');
+    Route::patch('/setting', [SettingController::class, 'update'])->name('setting.update');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/p/{feed_id}', [FeedController::class, 'detailFeed'])->name('feeds.detail');
     Route::post('/feeds/{feed}/archive', [FeedController::class, 'archive'])->name('feeds.archive');
     Route::post('/feeds/{feed}/unarchive', [FeedController::class, 'unarchive'])->name('feeds.unarchive');
+ 
 });
 
 require __DIR__.'/auth.php';
