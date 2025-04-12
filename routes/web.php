@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\SettingController;
@@ -26,7 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/p/{feed_id}', [FeedController::class, 'detailFeed'])->name('feeds.detail');
     Route::post('/feeds/{feed}/archive', [FeedController::class, 'archive'])->name('feeds.archive');
     Route::post('/feeds/{feed}/unarchive', [FeedController::class, 'unarchive'])->name('feeds.unarchive');
- 
+    Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');
+    Route::get('/archive/export/{format}', [ArchiveController::class, 'export'])->name('archive.export');
+
 });
 
 require __DIR__.'/auth.php';

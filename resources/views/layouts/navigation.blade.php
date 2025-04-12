@@ -25,7 +25,7 @@
             </div>
             <div class="flex gap-5">
                 <x-iconoir-archive />
-                <button onclick="window.location.href='/setting'">
+                <button onclick="window.location.href='/archive'">
                     Archive
                 </button>
             </div>
