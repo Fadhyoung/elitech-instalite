@@ -61,9 +61,9 @@ class FeedController extends Controller
 
     public function detailFeed($feed_id)
     {
-        // Fetch the feed by its ID
-        $feed = Feed::findOrFail($feed_id); // Assuming your Feed model exists
+
         $user = Auth::user();
+        $feed = Feed::with('comments.user')->findOrFail($feed_id);
 
         return view('profile.index', [
             'feed' => $feed,

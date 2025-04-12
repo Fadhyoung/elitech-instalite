@@ -22,7 +22,7 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $feeds = Feed::where('user_id', Auth::id())->latest()->get();
+        $feeds = Feed::where('user_id', Auth::id())->with(['comments.user'])->latest()->get();
 
         return view('profile.index', compact('feeds', 'user'));
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\SettingController;
@@ -30,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');
     Route::get('/archive/export/xlsx', [ArchiveController::class, 'exportXLSX'])->name('archive.export.xlsx');
     Route::get('/archive/export/pdf', [ArchiveController::class, 'exportPDF'])->name('archive.export.pdf');
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+
 });
 
 require __DIR__ . '/auth.php';
