@@ -22,10 +22,8 @@
                 <a href="{{ url('/export/csv') }}">
                     <button class="btn btn-primary">Export to CSV</button>
                 </a>
-                <a href="{{ route('archive.export', ['format' => 'pdf', 'from' => request('from'), 'to' => request('to')]) }}"
-                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Export PDF</a>
-                <a href="{{ route('archive.export', ['format' => 'xlsx', 'from' => request('from'), 'to' => request('to')]) }}"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Export Excel</a>
+                <a href="{{ route('archive.export.xlsx', ['date' => request('date')]) }}" class="btn btn-success">Export XLSX</a>
+                <a href="{{ route('archive.export.pdf', ['date' => request('date')]) }}" class="btn btn-danger">Export PDF</a>
             </div>
         </form>
 

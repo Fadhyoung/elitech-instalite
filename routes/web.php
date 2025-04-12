@@ -28,8 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/feeds/{feed}/archive', [FeedController::class, 'archive'])->name('feeds.archive');
     Route::post('/feeds/{feed}/unarchive', [FeedController::class, 'unarchive'])->name('feeds.unarchive');
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');
-    Route::get('/archive/export/{format}', [ArchiveController::class, 'export'])->name('archive.export');
-
+    Route::get('/archive/export/xlsx', [ArchiveController::class, 'exportXLSX'])->name('archive.export.xlsx');
+    Route::get('/archive/export/pdf', [ArchiveController::class, 'exportPDF'])->name('archive.export.pdf');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
