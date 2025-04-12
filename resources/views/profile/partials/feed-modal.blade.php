@@ -27,7 +27,8 @@
                         </div>
                         <div>
                             <div class="flex gap-5 items-center text-sm">
-                                <span class="font-semibold">{{ $user->username }}</span> <p x-text="selectedFeed?.caption"></p>
+                                <span class="font-semibold">{{ $user->username }}</span>
+                                <p x-text="selectedFeed?.caption"></p>
 
                             </div>
                         </div>
@@ -38,8 +39,14 @@
                 <div class="border-t p-4">
                     <div class="flex justify-between mb-2">
                         <div class="flex gap-4">
-                            <button>
+                            <!-- Archive Button (only show if not archived) -->
+                            <button x-show="!selectedFeed.archived" @click="archiveFeed(selectedFeed.id)">
                                 <x-iconoir-archive />
+                            </button>
+
+                            <!-- Unarchive Button (only show if archived) -->
+                            <button x-show="selectedFeed.archived" @click="unarchiveFeed(selectedFeed.id)">
+                                unarchive
                             </button>
                         </div>
                     </div>

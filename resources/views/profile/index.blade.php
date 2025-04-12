@@ -36,38 +36,13 @@
             @if ($feeds && $feeds->isNotEmpty())
 
             <!-- POSTS TAB -->
-            <div x-show="activeTab === 'posts'" class="w-full py-5 grid grid-cols-3 gap-2">
-                @forelse ($feeds as $feed)
-                @if (!$feed->archived)
-                <button
-                    class="w-full relative aspect-square bg-gray-100"
-                    @click="openModal(@js($feed))">
-                    <img
-                        src="{{ asset('storage/' . $feed->media_path) ?? '/placeholder.svg' }}"
-                        alt="Post {{ $feed->id }}"
-                        class="w-full h-full object-cover" />
-                </button>
-
-                @endif
-                @empty
-                <p class="text-center col-span-3">No posts available.</p>
-                @endforelse
+            <div x-show="activeTab === 'posts'">
+                @include('profile.partials.posts-tab', ['feeds' => $feeds])
             </div>
 
             <!-- SAVED / ARCHIVED TAB -->
-            <div x-show="activeTab === 'archived'" class="w-full py-5 grid grid-cols-3 gap-2">
-                @forelse ($feeds as $feed)
-                @if ($feed->archived)
-                <button class="w-full relative aspect-square bg-gray-100">
-                    <img
-                        src="{{ asset('storage/' . $feed->media_path) ?? '/placeholder.svg' }}"
-                        alt="Archived {{ $feed->id }}"
-                        class="w-full h-full object-cover" />
-                </button>
-                @endif
-                @empty
-                <p class="text-center col-span-3">No archived posts.</p>
-                @endforelse
+            <div x-show="activeTab === 'archived'">
+                @include('profile.partials.archived-tab', ['feeds' => $feeds])
             </div>
 
             <!-- TAGGED TAB -->
@@ -141,6 +116,12 @@
             <!-- MODAL -->
             @include('profile.partials.feed-modal')
 
+            <!-- MODAL NOTIF -->
+            <div x-show="notification" x-transition x-text="notification"
+                class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow"
+                x-cloak></div>
+
+
             <!-- ALPINEJS CONFIG -->
             <!-- Modal Management with Alpine.js -->
             <script>
@@ -148,23 +129,76 @@
                     return {
                         showModal: false,
                         activeTab: 'posts',
-                        selectedFeed: null, // Start with null, and we'll load feed dynamically based on the URL.
+                        selectedFeed: null,
+                        notification: '',
+                        showNotification(message) {
+                            this.notification = message;
+                            setTimeout(() => this.notification = '', 3000);
+                        },
 
                         openModal(feed) {
                             this.selectedFeed = {
                                 id: feed.id,
                                 caption: feed.caption,
-                                media_path: feed.media_path
+                                media_path: feed.media_path,
+                                archived: feed.archived,
                             };
 
                             this.showModal = true;
-                            history.pushState({ feedId: feed.id }, '', `/p/${feed.id}`);
+                            history.pushState({
+                                feedId: feed.id
+                            }, '', `/p/${feed.id}`);
                         },
 
                         closeModal() {
                             // Close the modal and revert the URL to the previous one
                             this.showModal = false;
                             history.pushState(null, '', '/profile');
+                        },
+
+                        archiveFeed(feedId) {
+                            fetch(`/feeds/${feedId}/archive`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                        'Accept': 'application/json',
+                                    }
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+                                    this.showModal = false;
+
+                                    history.pushState({}, '', '/profile');                                    
+
+                                    // Show a toast/notification - here's a simple example
+                                    this.showNotification(data.message);
+                                    window.location.reload();
+                                })
+                                .catch(error => {
+                                    console.error('Error archiving feed:', error);
+                                });
+                        },
+
+                        unarchiveFeed(feedId) {
+                            fetch(`/feeds/${feedId}/unarchive`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                        'Accept': 'application/json',
+                                    }
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+                                    this.selectedFeed.archived = false;
+                                    this.showModal = false;
+                                    history.pushState({}, '', '/profile');
+                                    this.showNotification(data.message);
+                                    
+                                    window.location.reload();
+                                })
+                                .catch(error => {
+                                    console.error('Error unarchiving feed:', error);
+                                });
                         },
 
                         init() {
@@ -175,6 +209,11 @@
                                 // Fetch the feed by ID (in real-world, you'd probably want to fetch it from an API or database)
                                 this.openModal(feedId);
                             }
+
+                            window.addEventListener('popstate', () => {
+                                const isFeedRoute = location.pathname.startsWith('/p/');
+                                this.showModal = isFeedRoute;
+                            });
 
                             // Listen for changes in the browser history (back/forward navigation)
                             window.addEventListener('popstate', (event) => {

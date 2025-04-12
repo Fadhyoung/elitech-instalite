@@ -24,7 +24,7 @@ class FeedController extends Controller
     // Handle form submission and save to database
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4|max:20480',
             'caption' => 'nullable|string|max:255',
@@ -68,6 +68,44 @@ class FeedController extends Controller
         return view('profile.index', [
             'feed' => $feed,
             'user' => $user,
+        ]);
+    }
+
+    public function archive($feedId)
+    {
+        // Fetch the feed by its ID
+        $feed = Feed::findOrFail($feedId); // Assuming your Feed model exists
+        $user = Auth::user();
+        if ($feed->user_id !== $user->id) {
+            abort(403);
+        }
+
+        $feed->archived = true;
+        $feed->save();
+
+        $feeds = Feed::where('user_id', Auth::id())->latest()->get();
+        return response()->json([
+            'message' => 'Feed archived successfully',
+            'feeds' => $feeds
+        ]);
+    }
+
+    public function unarchive($feedId)
+    {
+        $feed = Feed::findOrFail($feedId);
+        $user = Auth::user();
+
+        if ($feed->user_id !== $user->id) {
+            abort(403);
+        }
+
+        $feed->archived = false;
+        $feed->save();
+
+        $feeds = Feed::where('user_id', Auth::id())->latest()->get();
+        return response()->json([
+            'message' => 'Feed has been unarchived.',
+            'feeds' => $feeds
         ]);
     }
 
