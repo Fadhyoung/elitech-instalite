@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Feed;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class FeedExport implements FromView
@@ -19,6 +20,8 @@ class FeedExport implements FromView
     {
         $feeds = Feed::query()
             ->when($this->date, fn($q) => $q->whereDate('created_at', $this->date))
+            ->where('archived', true)
+            ->where('user_id', Auth::id())
             ->latest()
             ->get();
 
