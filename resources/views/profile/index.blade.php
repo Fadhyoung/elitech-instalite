@@ -8,7 +8,7 @@
             x-data="modalData()"
             class="w-full max-w-4xl mx-auto mt-10">
 
-            <!-- Tabs Navigation -->selectedFeed
+            <!-- Tabs Navigation -->
             <div class="flex w-full justify-center border-b">
                 <button
                     @click="activeTab = 'posts'"
@@ -141,6 +141,7 @@
                                 id: feed.id,
                                 caption: feed.caption,
                                 media_path: feed.media_path,
+                                media_type: feed.media_type,
                                 archived: feed.archived,
                             };
 
