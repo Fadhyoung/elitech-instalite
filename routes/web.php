@@ -1,16 +1,35 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedController;
-
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/feeds', [FeedController::class, 'index'])->name('feeds.index');
-//     Route::get('/feeds/create', [FeedController::class, 'create'])->name('feeds.create');
-//     Route::post('/feeds', [FeedController::class, 'store'])->name('feeds.store');
-// });
-
-Route::get('/feeds', [FeedController::class, 'index'])->name('feeds.index');
+use App\Http\Controllers\SettingController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/setting', [SettingController::class, 'edit'])->name('setting.edit');
+    Route::patch('/setting', [SettingController::class, 'update'])->name('setting.update');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('feeds', FeedController::class);
+    Route::get('/feeds', [FeedController::class, 'index'])->name('feeds.index');
+    Route::get('/feeds/create', [FeedController::class, 'create'])->name('feeds.create');
+    Route::post('/feeds', [FeedController::class, 'store'])->name('feeds.store');
+    Route::get('/p/{feed_id}', [FeedController::class, 'detailFeed'])->name('feeds.detail');
+    Route::post('/feeds/{feed}/archive', [FeedController::class, 'archive'])->name('feeds.archive');
+    Route::post('/feeds/{feed}/unarchive', [FeedController::class, 'unarchive'])->name('feeds.unarchive');
+    Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');
+    Route::get('/archive/export/xlsx', [ArchiveController::class, 'exportXLSX'])->name('archive.export.xlsx');
+    Route::get('/archive/export/pdf', [ArchiveController::class, 'exportPDF'])->name('archive.export.pdf');
+});
+
+require __DIR__ . '/auth.php';
