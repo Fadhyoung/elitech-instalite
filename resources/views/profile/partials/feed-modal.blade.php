@@ -7,12 +7,22 @@
 
             <!-- LEFT SIDE -->
             <div class="bg-black">
-                <img x-bind:src="'/storage/' + selectedFeed.media_path" alt="Profile Photo" class="w-full h-full min-w-[250px] min-h-[200px] object-cover" />
-                <button class="absolute right-3 top-1/2 bg-white/30 rounded-full p-1">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 5L16 12L9 19" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </button>
+                <template x-if="selectedFeed.media_type.startsWith('photo')">
+                    <img x-bind:src="'/storage/' + selectedFeed.media_path" class="w-full h-auto object-cover" />
+                </template>
+
+                <template x-if="selectedFeed.media_type.startsWith('video')">
+                    <video
+                        x-bind:src="'/storage/' + selectedFeed.media_path"
+                        class="w-full h-auto object-cover"
+                        autoplay
+                        muted
+                        loop
+                        playsinline>
+                        Your browser does not support the video tag.
+                    </video>
+                </template>
+
             </div>
 
             <!-- RIGHT SIDE -->

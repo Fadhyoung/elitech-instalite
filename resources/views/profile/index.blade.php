@@ -141,6 +141,7 @@
                                 id: feed.id,
                                 caption: feed.caption,
                                 media_path: feed.media_path,
+                                media_type: feed.media_type,
                                 archived: feed.archived,
                             };
 
