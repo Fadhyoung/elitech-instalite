@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="w-full px-8 mx-auto p-6 bg-white">
+    <div class="w-full h-full px-8 mx-auto p-6 bg-white">
         <h1 class="text-2xl font-bold mb-6">Archived Posts</h1>
 
         <!-- Filter Form -->
