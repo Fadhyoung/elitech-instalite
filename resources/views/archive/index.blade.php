@@ -13,17 +13,21 @@
                 <label for="to" class="block text-sm font-medium text-gray-700">To</label>
                 <input type="date" name="to" id="to" value="{{ request('to') }}" class="border rounded-md px-3 py-1">
             </div>
-
-            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-                Filter
-            </button>
+            
+            <x-primary-button>{{ __('Filter') }}</x-primary-button>
 
             <div class="ml-auto flex gap-2">
-                <a href="{{ url('/export/csv') }}">
-                    <button class="btn btn-primary">Export to CSV</button>
-                </a>
-                <a href="{{ route('archive.export.xlsx', ['date' => request('date')]) }}" class="btn btn-success">Export XLSX</a>
-                <a href="{{ route('archive.export.pdf', ['date' => request('date')]) }}" class="btn btn-danger">Export PDF</a>
+                <x-link-button
+                    href="{{ route('archive.export.xlsx', ['date' => request('date')]) }}"
+                    variant="primary">
+                    Export XLSX
+                </x-link-button>
+
+                <x-link-button
+                    href="{{ route('archive.export.pdf', ['date' => request('date')]) }}"
+                    variant="primary">
+                    Export PDF
+                </x-link-button>
             </div>
         </form>
 
@@ -42,7 +46,7 @@
                     @if ($feed->archived)
                     <tr class="border-b">
                         <td class="p-2 border w-48">
-                            @if (Str::startsWith($feed->media_type, 'image'))
+                            @if (Str::startsWith($feed->media_type, 'photo'))
                             <img src="{{ asset('storage/' . $feed->media_path) }}" class="w-full h-auto">
                             @elseif (Str::startsWith($feed->media_type, 'video'))
                             <video src="{{ asset('storage/' . $feed->media_path) }}" class="w-full h-auto" controls preload="metadata" muted></video>

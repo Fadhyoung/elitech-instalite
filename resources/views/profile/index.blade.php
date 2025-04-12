@@ -8,7 +8,7 @@
             x-data="modalData()"
             class="w-full max-w-4xl mx-auto mt-10">
 
-            <!-- Tabs Navigation -->selectedFeed
+            <!-- Tabs Navigation -->
             <div class="flex w-full justify-center border-b">
                 <button
                     @click="activeTab = 'posts'"
