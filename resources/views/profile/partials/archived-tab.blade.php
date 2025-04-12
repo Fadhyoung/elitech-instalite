@@ -1,7 +1,7 @@
-<div @class([ 'w-full py-5 grid gap-2' , 'grid-cols-2'=> $user->columns_preference == 2,
-    'grid-cols-3' => $user->columns_preference == 3,
-    'grid-cols-4' => $user->columns_preference == 4,
-    'grid-cols-5' => $user->columns_preference == 5,
+<div @class([ 'w-full py-5 grid gap-2' , 'grid-cols-2'=> $user->setting->feeds_per_row == 2,
+    'grid-cols-3' => $user->setting->feeds_per_row == 3,
+    'grid-cols-4' => $user->setting->feeds_per_row == 4,
+    'grid-cols-5' => $user->setting->feeds_per_row == 5,
     ])>
     @forelse ($feeds as $feed)
     @if ($feed->archived)

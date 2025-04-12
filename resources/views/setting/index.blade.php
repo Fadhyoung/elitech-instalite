@@ -25,12 +25,12 @@
                     @method('PATCH')
 
                     <div class="mb-4">
-                        <label for="columns_preference" class="block text-sm font-medium text-gray-700">Number of Columns</label>
-                        <select id="columns_preference" name="columns_preference" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm ">
-                            <option value="2" {{ auth()->user()->columns_preference == 2 ? 'selected' : '' }}>2 Columns</option>
-                            <option value="3" {{ auth()->user()->columns_preference == 3 ? 'selected' : '' }}>3 Columns</option>
-                            <option value="4" {{ auth()->user()->columns_preference == 4 ? 'selected' : '' }}>4 Columns</option>
-                            <option value="5" {{ auth()->user()->columns_preference == 5 ? 'selected' : '' }}>5 Columns</option>
+                        <label for="feeds_per_row" class="block text-sm font-medium text-gray-700">Number of Columns</label>
+                        <select id="feeds_per_row" name="feeds_per_row" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm ">
+                            <option value="2" {{ $setting->feeds_per_row == 2 ? 'selected' : '' }}>2 Columns</option>
+                            <option value="3" {{ $setting->feeds_per_row == 3 ? 'selected' : '' }}>3 Columns</option>
+                            <option value="4" {{ $setting->feeds_per_row == 4 ? 'selected' : '' }}>4 Columns</option>
+                            <option value="5" {{ $setting->feeds_per_row == 5 ? 'selected' : '' }}>5 Columns</option>
                             <!-- Add more options as necessary -->
                         </select>
                     </div>

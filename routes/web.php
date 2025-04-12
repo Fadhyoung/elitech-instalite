@@ -15,7 +15,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/setting', [SettingController::class, 'edit'])->name('setting.edit');
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::patch('/setting', [SettingController::class, 'update'])->name('setting.update');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
