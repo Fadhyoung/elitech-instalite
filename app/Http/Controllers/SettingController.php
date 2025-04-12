@@ -20,4 +20,18 @@ class SettingController extends Controller
             'user' => $request->user(),
         ]);
     }
+
+    public function update(request $request)
+    {
+        
+        $request->validate([
+            'columns_preference' => 'required|integer|min:2|max:5',
+        ]);
+
+        $user = $request->user();
+        $user->columns_preference = $request->columns_preference;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Settings updated successfully!');
+    }
 }
