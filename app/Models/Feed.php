@@ -16,7 +16,6 @@ class Feed extends Model
         'archived',
     ];
 
-    
     use HasFactory;
     public function user() {
         return $this->belongsTo(User::class);

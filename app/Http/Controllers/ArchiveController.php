@@ -47,6 +47,8 @@ class ArchiveController extends Controller
     {
         $feeds = Feed::query()
             ->when($request->date, fn($q) => $q->whereDate('created_at', $request->date))
+            ->where('archived', true)
+            ->where('user_id', Auth::id())
             ->latest()
             ->get();
 
