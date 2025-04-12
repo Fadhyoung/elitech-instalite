@@ -26,8 +26,8 @@ class FeedController extends Controller
     {
 
         $request->validate([
-            'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4|max:20480',
-            'caption' => 'nullable|string|max:255',
+            'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4,mov|max:153600',
+            'caption' => 'required|string|max:255',
         ]);
 
         // Store the media file
@@ -112,8 +112,8 @@ class FeedController extends Controller
     public function update(Request $request, Feed $feed)
     {
         $request->validate([
-            'media_path' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov,avi,webm|max:20480',
-            'media_type' => 'nullable|string',
+            'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4,mov|max:153600',
+            'media_type' => 'required|string',
             'caption' => 'nullable|string|max:255',
         ]);
 
