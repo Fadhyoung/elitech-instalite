@@ -49,9 +49,10 @@ class FeedController extends Controller
         return redirect()->route('profile.index')->with('success', 'Post created!');
     }
 
-    public function show(Feed $feed)
+    public function detail(Feed $feed)
     {
-        return view('feeds.show', compact('feed'));
+        $user = Auth::user();
+        return view('feeds.detail', compact('feed', 'user'));
     }
 
     public function edit(Feed $feed)
@@ -61,9 +62,9 @@ class FeedController extends Controller
 
     public function detailFeed($feed_id)
     {
-        // Fetch the feed by its ID
-        $feed = Feed::findOrFail($feed_id); // Assuming your Feed model exists
+
         $user = Auth::user();
+        $feed = Feed::with('comments.user')->findOrFail($feed_id);
 
         return view('profile.index', [
             'feed' => $feed,

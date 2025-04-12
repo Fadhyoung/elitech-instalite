@@ -26,7 +26,6 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'columns_preference' => ['required', 'integer','min:3', 'max:5'],
             'bio' => ['nullable', 'string', 'max:500'],
         ];
     }

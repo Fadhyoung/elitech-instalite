@@ -22,7 +22,7 @@
                     <h1 class="text-xl font-normal">{{ Auth::user()->username ?? 'username' }}</h1>
                     <div class="flex gap-2">
                         <button onclick="window.location.href='/setting'" class="h-9 px-4 rounded-lg text-sm font-semibold border border-gray-300 bg-gray-100">Edit profile</button>
-                        <button href="#" class="h-9 px-4 rounded-lg text-sm font-semibold border border-gray-300 bg-gray-100">View archive</button>
+                        <button onclick="window.location.href='/archive'" class="h-9 px-4 rounded-lg text-sm font-semibold border border-gray-300 bg-gray-100">View archive</button>
                         <button
                             onclick="window.location.href='/setting'"
                             class="h-9 w-9 rounded-full flex items-center justify-center">

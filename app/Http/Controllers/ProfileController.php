@@ -22,7 +22,7 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $feeds = Feed::where('user_id', Auth::id())->latest()->get();
+        $feeds = Feed::where('user_id', Auth::id())->with(['comments.user'])->latest()->get();
 
         return view('profile.index', compact('feeds', 'user'));
     }
@@ -76,5 +76,16 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function showFeedModal(Feed $feed)
+    {
+        $user = Auth::user(); // or however you get profile owner
+        $feeds = Feed::where('user_id', $user->id)->latest()->get();
+
+        return view('profile.show', [
+            'feeds' => $feeds,
+            'selectedFeed' => $feed,
+        ]);
     }
 }
