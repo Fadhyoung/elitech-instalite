@@ -5,7 +5,7 @@
         @include('profile.partials.profile-bar')
 
         <div
-            x-data="modalData()"
+            x-data="modalData(@js($feeds))"
             class="w-full max-w-4xl mx-auto mt-10">
 
             <!-- Tabs Navigation -->
@@ -125,11 +125,12 @@
             <!-- ALPINEJS CONFIG -->
             <!-- Modal Management with Alpine.js -->
             <script>
-                function modalData() {
+                function modalData(initialFeeds) {
                     return {
                         showModal: false,
                         activeTab: 'posts',
                         selectedFeed: null,
+                        feeds: initialFeeds,
                         notification: '',
                         comment: '',
                         showNotification(message) {
@@ -169,13 +170,15 @@
                                 })
                                 .then(res => res.json())
                                 .then(data => {
+                                    const feed = this.feeds.find(f => f.id === feedId);
+                                    if (feed) feed.archived = true;
                                     this.showModal = false;
 
                                     history.pushState({}, '', '/profile');
 
                                     // Show a toast/notification - here's a simple example
                                     this.showNotification(data.message);
-                                    window.location.reload();
+                                    
                                 })
                                 .catch(error => {
                                     console.error('Error archiving feed:', error);
@@ -192,12 +195,13 @@
                                 })
                                 .then(res => res.json())
                                 .then(data => {
+                                    const feed = this.feeds.find(f => f.id === feedId);
+                                    if (feed) feed.archived = false;
+
                                     this.selectedFeed.archived = false;
                                     this.showModal = false;
                                     history.pushState({}, '', '/profile');
                                     this.showNotification(data.message);
-
-                                    window.location.reload();
                                 })
                                 .catch(error => {
                                     console.error('Error unarchiving feed:', error);

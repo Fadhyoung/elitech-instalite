@@ -77,4 +77,15 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function showFeedModal(Feed $feed)
+    {
+        $user = Auth::user(); // or however you get profile owner
+        $feeds = Feed::where('user_id', $user->id)->latest()->get();
+
+        return view('profile.show', [
+            'feeds' => $feeds,
+            'selectedFeed' => $feed,
+        ]);
+    }
 }

@@ -56,7 +56,7 @@
                                         class="w-full h-full object-cover" />
                                 </div>
 
-                                <div class="flex flex-col text-sm">
+                                <div class="flex gap-2 text-sm">
                                     <span class="font-semibold" x-text="comment.user.name"></span>
                                     <p x-text="comment.comment"></p>
                                 </div>

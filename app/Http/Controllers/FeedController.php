@@ -49,9 +49,10 @@ class FeedController extends Controller
         return redirect()->route('profile.index')->with('success', 'Post created!');
     }
 
-    public function show(Feed $feed)
+    public function detail(Feed $feed)
     {
-        return view('feeds.show', compact('feed'));
+        $user = Auth::user();
+        return view('feeds.detail', compact('feed', 'user'));
     }
 
     public function edit(Feed $feed)
