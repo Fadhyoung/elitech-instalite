@@ -23,7 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('feeds', FeedController::class);
     Route::get('/feeds', [FeedController::class, 'index'])->name('feeds.index');
-    Route::get('/feeds/create', [FeedController::class, 'create'])->name('feeds.create');
+    Route::post('/feeds/create', [FeedController::class, 'create'])->name('feeds.create');
+    Route::post('/feeds/store', [FeedController::class, 'store'])->name('feeds.store');
     Route::post('/feeds', [FeedController::class, 'store'])->name('feeds.store');
     Route::get('/p/{feed}', [FeedController::class, 'detail']);
     Route::post('/feeds/{feed}/archive', [FeedController::class, 'archive'])->name('feeds.archive');

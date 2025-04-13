@@ -16,15 +16,35 @@ class FeedController extends Controller
     }
 
     // Show form to create a new feed
-    public function create()
+    public function create(Request $request)
     {
-        return view('feeds.create');
+        $request->validate([
+            'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4,mov|max:153600',
+            'caption' => 'required|string|max:255',
+        ]);
+
+        // Store the media file
+        $mediaFile = $request->file('media_path');
+        $mediaPath = $mediaFile->store('uploads', 'public');
+
+        // Determine media type
+        $mediaType = str_contains($mediaFile->getMimeType(), 'video') ? 'video' : 'photo';
+
+        // Create the feed
+        Feed::create([
+            'user_id' => Auth::id(),
+            'media_path' => $mediaPath,
+            'media_type' => $mediaType,
+            'archived' => false,
+            'caption' => $request->caption ?? 'no caption',
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Post created!']);
     }
 
     // Handle form submission and save to database
     public function store(Request $request)
     {
-
         $request->validate([
             'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4,mov|max:153600',
             'caption' => 'required|string|max:255',
