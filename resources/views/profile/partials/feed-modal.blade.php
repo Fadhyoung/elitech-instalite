@@ -31,14 +31,32 @@
                 <!-- Caption and content -->
                 <div class="h-full flex flex-col gap-0 flex-grow bg">
                     <!-- Main caption -->
-                    <div class="p-4 flex items-start gap-2 border-b">
-                        <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                            <img src="{{ asset('storage/' . $user->photo_profile) }}" alt="Profile Photo" class="w-full h-full object-cover" />
-                        </div>
-                        <div>
-                            <div class="flex gap-5 items-center text-sm">
+                    <div class="p-4 flex items-center justify-between gap-2 border-b">
+                        <div class="flex gap-5 items-center">
+                            <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                                <img src="{{ asset('storage/' . $user->photo_profile) }}" alt="Profile Photo" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="flex gap-2 items-center text-sm">
                                 <span class="font-semibold">{{ $user->username }}</span>
                                 <p x-text="selectedFeed?.caption"></p>
+                            </div>
+                        </div>
+                        <div>
+
+                            <div class=" relative">
+                                <button onclick="document.getElementById('customDropdown2').classList.toggle('hidden')"
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition">
+                                    <x-iconoir-menu />
+                                    <svg class="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+
+                                <div id="customDropdown2" class="absolute bottom-full mb-2 left-0 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md py-1 hidden z-50">
+                                    <button type="button" @click="deleteFeed" class="text-red-500 ml-2">
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -193,12 +193,11 @@
                         },
                         body: formData,
                     })
-                    .then(response => {
+                    .then(response => {                        
                         if (response.redirected) {
-                            window.location.href = response.url; // Manually follow the redirect
+                            window.location.href = response.url;
                             return;
                         }
-
                         return response.text();
                     })
                     .catch(error => {
@@ -207,7 +206,6 @@
                         toggleModal('createModal', false);
                     });
             }
-
 
         }
     }

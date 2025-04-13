@@ -178,7 +178,7 @@
 
                                     // Show a toast/notification - here's a simple example
                                     this.showNotification(data.message);
-                                    
+
                                 })
                                 .catch(error => {
                                     console.error('Error archiving feed:', error);
@@ -205,6 +205,37 @@
                                 })
                                 .catch(error => {
                                     console.error('Error unarchiving feed:', error);
+                                });
+                        },
+
+                        deleteFeed() {
+                            if (!this.selectedFeed?.id) {
+                                alert('No feed selected');
+                                return;
+                            }
+
+                            if (!confirm('Are you sure you want to delete this feed?')) return;
+
+                            fetch(`/feeds/${this.selectedFeed.id}`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                        'Accept': 'application/json',
+                                    },
+                                    body: new URLSearchParams({
+                                        '_method': 'DELETE',
+                                    })
+                                })
+                                .then(response => {                                    
+                                    if (!response.ok) throw new Error('Delete failed');
+                                    console.log('Redirecting to profile...');
+                                    this.selectedFeed = null;
+                                    this.showModal = false;
+                                    window.location.href = '/profile';
+                                })
+                                .catch(error => {
+                                    console.error(error);
+                                    alert('Failed to delete feed');
                                 });
                         },
 
