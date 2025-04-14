@@ -30,14 +30,10 @@
         <div class="w-full mx-auto px-4 py-6 border">
             <div class="rounded-xl p-1 flex items-center">
                 <div class="size-20 rounded-full bg-gray-300 flex items-center justify-center mr-4 overflow-hidden">
-                    @if (auth()->user()->photo_profile)
-                    <img id="profilePreview" src="{{ asset('storage/' . auth()->user()->photo_profile) }}" alt="Profile Photo" class="w-full h-full object-cover">
-                    @else
-                    <svg class="w-8 h-8 text-gray-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" fill="#6B7280" />
-                        <path d="M12 13C7.58172 13 4 16.5817 4 21H20C20 16.5817 16.4183 13 12 13Z" fill="#6B7280" />
-                    </svg>
-                    @endif
+                    <img id="profilePreview"
+                        src="{{ auth()->user()->photo_profile ? asset('storage/' . auth()->user()->photo_profile) : asset('images/img_cover_none.png') }}"
+                        alt="Profile Photo"
+                        class="w-full h-full object-cover">
                 </div>
                 <div class="flex-1">
                     <h1 class="text-base font-bold">{{ auth()->user()->username }}</h1>
