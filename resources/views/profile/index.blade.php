@@ -130,15 +130,19 @@
                         feeds: initialFeeds,
                         notification: '',
                         comment: '',
+                        // liked: initialFeeds.liked_by_auth,
+                        // likesCount: initialLikesCount,                        
+
                         showNotification(message) {
                             this.notification = message;
                             setTimeout(() => this.notification = '', 3000);
                         },
 
-                        openModal(feed) {
+                        openModal(feed) {                            
                             fetch(`/feeds/${feed.id}`)
                                 .then(res => res.json())
                                 .then(freshFeed => {
+                                    console.log(freshFeed);
                                     this.selectedFeed = freshFeed;
                                     this.showModal = true;
                                     history.pushState({
@@ -280,6 +284,27 @@
                                 })
                                 .catch(err => console.error('Error deleting comment:', err));
                         },
+
+                        
+
+                        async toggleLike(feedId) {
+                            fetch(`/feeds/${feedId}/like`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                        'Accept': 'application/json',
+                                    },
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    this.selectedFeed.liked_by_auth = data.liked;
+                                    this.selectedFeed.likes_count = data.likes_count;
+                                })
+                                .catch(error => {
+                                    console.error('Like toggle failed', error);
+                                });
+                        },
+
 
                         init() {
                             const pathParts = window.location.pathname.split('/');

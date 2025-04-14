@@ -69,9 +69,16 @@ class FeedController extends Controller
 
     public function show(Feed $feed)
     {
-        $feed->load(['comments.user']);        
+        $user = Auth::user();
+
+        $feed->load(['comments.user']);
+        $feed->loadCount(['likes']);
+
+        $feed->liked_by_auth = $feed->likes->contains($user);
+
         return response()->json($feed);
     }
+
 
     public function edit(Feed $feed)
     {
@@ -126,6 +133,26 @@ class FeedController extends Controller
             'feeds' => $feeds
         ]);
     }
+
+    public function toggleLike(Feed $feed)
+    {
+        $user = Auth::user();
+
+        if ($feed->isLikedBy($user)) {
+            $feed->likes()->detach($user);
+            $liked = false;
+        } else {
+            $feed->likes()->attach($user);
+            $liked = true;
+        }
+
+        return response()->json([
+            'liked' => $liked,
+            'likes_count' => $feed->likes()->count(),
+        ]);
+    }
+
+
 
     public function update(Request $request, Feed $feed)
     {

@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/feeds/{feed}', [FeedController::class, 'show']);
     Route::post('/feeds/{feed}/archive', [FeedController::class, 'archive'])->name('feeds.archive');
     Route::post('/feeds/{feed}/unarchive', [FeedController::class, 'unarchive'])->name('feeds.unarchive');
+    Route::post('/feeds/{feed}/like', [FeedController::class, 'toggleLike'])->name('feeds.like');
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');
     Route::get('/archive/export/xlsx', [ArchiveController::class, 'exportXLSX'])->name('archive.export.xlsx');
     Route::get('/archive/export/pdf', [ArchiveController::class, 'exportPDF'])->name('archive.export.pdf');

@@ -49,16 +49,23 @@ class User extends Authenticatable
         ];
     }
 
-    public function profile() {
+    public function profile()
+    {
         return $this->hasOne(Profile::class);
     }
-    
-    public function feeds() {
+
+    public function feeds()
+    {
         return $this->hasMany(Feed::class);
     }
-    
-    public function setting() {
+
+    public function setting()
+    {
         return $this->hasOne(Setting::class);
     }
-    
+
+    public function likedFeeds()
+    {
+        return $this->belongsToMany(Feed::class, 'feed_user_likes')->withTimestamps();
+    }
 }

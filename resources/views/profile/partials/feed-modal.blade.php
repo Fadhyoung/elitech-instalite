@@ -100,6 +100,17 @@
                                 <x-iconoir-archive />
                             </button>
 
+                            <button
+                                @click="toggleLike(selectedFeed.id)"
+                                class="text-sm font-semibold flex items-center space-x-2">
+                                <span x-bind:class="selectedFeed.liked_by_auth ? 'text-red-600' : 'text-gray-400'">
+                                    <x-iconoir-heart />
+                                </span>
+                                <span x-text="selectedFeed.liked_by_auth ? 'Liked' : 'Like'"></span>
+                            </button>
+
+                            <p x-text="likesCount + ' likes'" class="text-gray-600 text-sm mt-1"></p>
+
                             <button x-show="selectedFeed.archived" @click="unarchiveFeed(selectedFeed.id)">
                                 unarchive
                             </button>
