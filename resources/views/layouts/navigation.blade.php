@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="w-full h-full bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav class="w-full h-full bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <div class="w-full h-full p-5 flex lg:flex-col xs:flex-row justify-between lg:items-start xs:items-center">
 
         <div class="lg:flex xs:hidden flex-col gap-7">
@@ -15,12 +15,6 @@
                     Profile
                 </button>
             </div>
-            <!-- <div class="flex gap-5">
-                <x-iconoir-video-camera />
-                <button onclick="window.location.href='/feeds'">
-                    Feeds
-                </button>
-            </div> -->
             <div class="flex gap-5">
                 <x-iconoir-archive />
                 <button onclick="window.location.href='/archive'">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Feed;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class FeedController extends Controller
 {
@@ -66,6 +67,19 @@ class FeedController extends Controller
         return view('feeds.detail', compact('feed', 'user'));
     }
 
+    public function show(Feed $feed)
+    {
+        $user = Auth::user();
+
+        $feed->load(['comments.user']);
+        $feed->loadCount(['likes']);
+
+        $feed->liked_by_auth = $feed->likes->contains($user);
+
+        return response()->json($feed);
+    }
+
+
     public function edit(Feed $feed)
     {
         return view('feeds.edit', compact('feed'));
@@ -117,6 +131,24 @@ class FeedController extends Controller
         return response()->json([
             'message' => 'Feed has been unarchived.',
             'feeds' => $feeds
+        ]);
+    }
+
+    public function toggleLike(Feed $feed)
+    {
+        $user = Auth::user();
+
+        if ($feed->isLikedBy($user)) {
+            $feed->likes()->detach($user);
+            $liked = false;
+        } else {
+            $feed->likes()->attach($user);
+            $liked = true;
+        }
+
+        return response()->json([
+            'liked' => $liked,
+            'likes_count' => $feed->likes()->count(),
         ]);
     }
 

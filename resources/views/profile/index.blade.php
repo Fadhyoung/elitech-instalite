@@ -116,7 +116,7 @@
 
             <!-- MODAL NOTIF -->
             <div x-show="notification" x-transition x-text="notification"
-                class="fixed top-4 right-4 bg-white text-black px-4 py-2 rounded shadow"
+                class="fixed top-4 right-4 bg-black text-white px-4 py-2 rounded shadow"
                 x-cloak></div>
 
 
@@ -130,25 +130,26 @@
                         feeds: initialFeeds,
                         notification: '',
                         comment: '',
+
                         showNotification(message) {
                             this.notification = message;
                             setTimeout(() => this.notification = '', 3000);
                         },
 
                         openModal(feed) {
-                            this.selectedFeed = {
-                                id: feed.id,
-                                caption: feed.caption,
-                                media_path: feed.media_path,
-                                media_type: feed.media_type,
-                                archived: feed.archived,
-                                comments: feed.comments,
-                            };
-
-                            this.showModal = true;
-                            history.pushState({
-                                feedId: feed.id
-                            }, '', `/p/${feed.id}`);
+                            fetch(`/feeds/${feed.id}`)
+                                .then(res => res.json())
+                                .then(freshFeed => {
+                                    console.log(freshFeed);
+                                    this.selectedFeed = freshFeed;
+                                    this.showModal = true;
+                                    history.pushState({
+                                        feedId: freshFeed.id
+                                    }, '', `/p/${freshFeed.id}`);
+                                })
+                                .catch(err => {
+                                    console.error('Failed to fetch updated feed:', err);
+                                });
                         },
 
                         closeModal() {
@@ -221,12 +222,11 @@
                                         '_method': 'DELETE',
                                     })
                                 })
-                                .then(response => {                                    
+                                .then(response => {
                                     if (!response.ok) throw new Error('Delete failed');
-                                    console.log('Redirecting to profile...');
                                     this.selectedFeed = null;
                                     this.showModal = false;
-                                    window.location.href = '/profile';
+                                    window.location.assign('/profile');
                                 })
                                 .catch(error => {
                                     console.error(error);
@@ -283,10 +283,28 @@
                                 .catch(err => console.error('Error deleting comment:', err));
                         },
 
+                        async toggleLike(feedId) {
+                            fetch(`/feeds/${feedId}/like`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                        'Accept': 'application/json',
+                                    },
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    this.selectedFeed.liked_by_auth = data.liked;
+                                    this.selectedFeed.likes_count = data.likes_count;
+                                })
+                                .catch(error => {
+                                    console.error('Like toggle failed', error);
+                                });
+                        },
+
                         init() {
                             const pathParts = window.location.pathname.split('/');
                             const feedId = pathParts[pathParts.length - 1];
-                            if (feedId && !isNaN(feedId)) {                                
+                            if (feedId && !isNaN(feedId)) {
                                 this.openModal(feedId);
                             }
 

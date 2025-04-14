@@ -13,7 +13,7 @@
                 <label for="to" class="block text-sm font-medium text-gray-700">To</label>
                 <input type="date" name="to" id="to" value="{{ request('to') }}" class="border rounded-md px-3 py-1">
             </div>
-            
+
             <x-primary-button>{{ __('Filter') }}</x-primary-button>
 
             <div class="ml-auto flex gap-2">
@@ -39,6 +39,7 @@
                         <th class="p-2 border">Media</th>
                         <th class="p-2 border">Caption</th>
                         <th class="p-2 border">Post Date</th>
+                        <th class="p-2 border">Comments</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,6 +57,23 @@
                         </td>
                         <td class="p-2 border align-top">{{ $feed->caption }}</td>
                         <td class="p-2 border align-top">{{ $feed->created_at->format('Y-m-d') }}</td>
+                        <td class="h-full flex flex-col align-top">
+                            @foreach ($feed->comments as $comment )
+                            <div class="p-3 flex gap-5 items-center border-b">
+                                <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                                    <img
+                                        src="{{ asset('storage/' . $feed->user->photo_profile) }}"
+                                        alt="Profile Photo"
+                                        class="w-full h-full object-cover" />
+                                </div>
+
+                                <div class="flex gap-2 text-sm">
+                                    <p class="font-semibold"> {{ $feed->user->username }}</p>
+                                    <p>{{ $comment->comment }}</p>
+                                </div>
+                            </div>
+                            @endforeach
+                        </td>
                     </tr>
                     @endif
                     @empty

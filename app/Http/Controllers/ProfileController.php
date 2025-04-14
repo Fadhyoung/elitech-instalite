@@ -21,7 +21,17 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $feeds = Feed::where('user_id', Auth::id())->with(['comments.user'])->latest()->get();
+        $feeds = Feed::where('user_id', $user->id)
+        ->with([
+            'comments.user',
+            'likes',
+        ])
+        ->latest()
+        ->get()
+        ->map(function ($feed) use ($user) {
+            $feed->liked_by_auth = $feed->likes->contains($user);
+            return $feed;
+        });
 
         return view('profile.index', compact('feeds', 'user'));
     }

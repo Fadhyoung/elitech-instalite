@@ -17,7 +17,8 @@ class Feed extends Model
     ];
 
     use HasFactory;
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
@@ -25,5 +26,14 @@ class Feed extends Model
     {
         return $this->hasMany(Comment::class);
     }
-    
+
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'feed_user_likes')->withTimestamps();
+    }
+
+    public function isLikedBy(User $user): bool
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
 }

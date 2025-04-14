@@ -41,8 +41,8 @@
                         </div>
                         <div>
 
-                            <div class=" relative">
-                                <button onclick="document.getElementById('customDropdown2').classList.toggle('hidden')"
+                            <div class="relative" x-data="{ showDropdown: false }">
+                                <button @click="showDropdown = !showDropdown"
                                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition">
                                     <x-iconoir-menu />
                                     <svg class="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -50,7 +50,7 @@
                                     </svg>
                                 </button>
 
-                                <div id="customDropdown2" class="absolute bottom-full mb-2 left-0 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md py-1 hidden z-50">
+                                <div x-show="showDropdown" @click.away="showDropdown = false" class="absolute bottom-full mb-2 left-0 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md py-1 z-50">
                                     <button type="button" @click="deleteFeed" class="text-red-500 ml-2">
                                         Delete
                                     </button>
@@ -99,6 +99,17 @@
                             <button x-show="!selectedFeed.archived" @click="archiveFeed(selectedFeed.id)">
                                 <x-iconoir-archive />
                             </button>
+
+                            <button
+                                @click="toggleLike(selectedFeed.id)"
+                                class="text-sm font-semibold flex items-center space-x-2">
+                                <span x-bind:class="selectedFeed.liked_by_auth ? 'text-red-600' : 'text-gray-400'">
+                                    <x-iconoir-heart />
+                                </span>
+                                <span x-text="selectedFeed.liked_by_auth ? 'Liked' : 'Like'"></span>
+                            </button>
+
+                            <p x-text="likesCount + ' likes'" class="text-gray-600 text-sm mt-1"></p>
 
                             <button x-show="selectedFeed.archived" @click="unarchiveFeed(selectedFeed.id)">
                                 unarchive

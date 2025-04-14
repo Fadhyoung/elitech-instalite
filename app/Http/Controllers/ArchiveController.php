@@ -13,7 +13,7 @@ class ArchiveController extends Controller
 {
     public function index()
     {
-        $query = Feed::with('user.profile')
+        $query = Feed::with('user.profile', 'comments.user')
             ->where('archived', true)
             ->where('user_id', Auth::id());
 
