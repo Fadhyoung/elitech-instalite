@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Instalite') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,8 +20,9 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen grid grid-cols-6 bg-gray-100 dark:bg-gray-900">
-        <div class="w-1/6 h-screen fixed col-span-1 overflow-hidden border-r bg-white">
+    <div class="min-h-screen grid lg:grid-cols-6 bg-gray-100 dark:bg-gray-900">
+        <div class="lg:w-1/6 lg:h-screen lg:fixed lg:col-span-1 border-r bg-white
+                w-full h-16 fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center border-t lg:border-t-0 lg:justify-start lg:items-start">
             @include('layouts.navigation')
         </div>
 
@@ -33,9 +34,9 @@
             </div>
         </header>
         @endisset
-        Cancel
+
         <!-- Page Content -->
-        <main class="w-full col-start-2 col-span-5">
+        <main class="w-full lg:col-start-2 xs:col-start-1 col-span-5">
             {{ $slot }}
         </main>
 
@@ -193,7 +194,7 @@
                         },
                         body: formData,
                     })
-                    .then(response => {                        
+                    .then(response => {
                         if (response.redirected) {
                             window.location.href = response.url;
                             return;

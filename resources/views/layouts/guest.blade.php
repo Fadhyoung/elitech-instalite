@@ -19,16 +19,18 @@
 <body class="font-sans text-gray-900 antialiased">
     <div class="w-full h-screen flex justify-center items-center" style="background-color: #FAFAFA;">
 
-        <div class="w-1/2 h-1/2 m-auto flex gap-10 justify-center items-center">
+        <div class="lg:w-1/2 xs:w-full h-1/2 lg:m-auto xs:m-0 flex lg:flex-row xs:flex-col gap-10 justify-center items-center">
 
             <!-- LEFT SIDE -->
-            <div class="w-full h-auto flex items-end justify-end">
+            <div class="w-full h-auto lg:flex xs:hidden items-end justify-end bg-red-50">
                 <img src="{{ asset('images/img_mockup_cover.png') }}"
                     alt="Instagram Mobile Mockup"
                     class="h-full w-full object-contain object-right" />
             </div>
             <!-- RIGHT SIDE -->
-            {{ $slot }}
+            <div class="w-full">
+                {{ $slot }}
+            </div>
         </div>
 
     </div>
