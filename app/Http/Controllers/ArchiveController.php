@@ -38,6 +38,7 @@ class ArchiveController extends Controller
     public function exportPDF(Request $request)
     {
         $feeds = Feed::query()
+            ->with('comments')
             ->when($request->date, fn($q) => $q->whereDate('created_at', $request->date))
             ->where('archived', true)
             ->where('user_id', Auth::id())
