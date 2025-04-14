@@ -31,21 +31,12 @@ Copy the example .env file and generate the app key:
 cp .env.example .env
 php artisan key:generate
 ```
-Update your .env to use SQLite:
-```
-DB_CONNECTION=sqlite
-DB_DATABASE=${PWD}/database/database.sqlite
-```
-**Make sure the file database/database.sqlite exists. If it doesn't, create an empty one:**
-```
-touch database/database.sqlite
-```
 
 ## 🗃️ Run Migrations and Seeders
 
 To set up your tables and seed the database:
 ```
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
 ## 🔥 Run the App
