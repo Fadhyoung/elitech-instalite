@@ -1,6 +1,6 @@
-# 🚀 Laravel Blade App with Vite, Tailwind, and SQLite
+# 🚀 InstaLite Laravel Blade App with Vite, Tailwind, and mysql
 
-This project is a Laravel Blade application that uses Vite, Tailwind CSS, and Alpine.js for a modern frontend stack. It uses SQLite for simple local development.
+This project is a Laravel Blade application that uses Vite, Tailwind CSS, and Alpine.js for a modern frontend stack. It uses mysql for simple local development.
 
 ---
 
@@ -55,13 +55,11 @@ Use the following command to start the backend server and frontend assets in par
 npm run dev
 php artisan serve
 ```
-SQLite (optional, but preferred for running without MySQL)
 
 ## 📁 Project Structure Highlights
 
 * Blade templates in resources/views
 * TailwindCSS and Alpine.js via Vite
-* SQLite database for local use (file: database/database.sqlite)
 * Factories and seeders available to generate test data
 
 ## Folder Structure
