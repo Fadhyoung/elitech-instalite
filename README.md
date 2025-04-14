@@ -31,6 +31,11 @@ Copy the example .env file and generate the app key:
 cp .env.example .env
 php artisan key:generate
 ```
+Update your mysql username and password
+```
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
 ## 🗃️ Run Migrations and Seeders
 
