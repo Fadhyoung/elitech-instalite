@@ -18,7 +18,7 @@ Before you begin, make sure you have these installed:
 Clone the repository and install dependencies:
 ```
 git clone git@github.com:Fadhyoung/elitech-instalite.git
-cd your-repo
+cd elitech-instalite
 composer install
 npm install
 
@@ -31,21 +31,22 @@ Copy the example .env file and generate the app key:
 cp .env.example .env
 php artisan key:generate
 ```
-Update your .env to use SQLite:
+Update your mysql username and password
 ```
-DB_CONNECTION=sqlite
-DB_DATABASE=${PWD}/database/database.sqlite
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 ```
-**Make sure the file database/database.sqlite exists. If it doesn't, create an empty one:**
+Create the database
 ```
-touch database/database.sqlite
+mysql -u root -p -e "CREATE DATABASE instalite;"
 ```
 
 ## 🗃️ Run Migrations and Seeders
 
 To set up your tables and seed the database:
 ```
-php artisan migrate --seed
+php artisan migrate:fresh --seed
+php artisan storage:link
 ```
 
 ## 🔥 Run the App
