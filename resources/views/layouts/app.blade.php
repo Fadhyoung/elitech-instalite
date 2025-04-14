@@ -119,9 +119,14 @@
                     </div>
 
 
-                </x-slot>
+                </x-slot>                
 
             </x-modal>
+
+            <!-- MODAL NOTIF -->
+            <div x-show="notification" x-transition x-text="notification"
+                    class="fixed top-4 right-4 bg-black text-white px-4 py-2 rounded shadow"
+                    x-cloak></div>
         </div>
 
     </div>
@@ -138,9 +143,15 @@
             image: null,
             caption: '',
             showModal: false,
+            notification: '',
 
             init() {
                 window.postForm = this;
+            },
+
+            showNotification(message) {
+                this.notification = message;
+                setTimeout(() => this.notification = '', 3000);
             },
 
             handleUpload(event) {
@@ -190,10 +201,12 @@
                         body: formData,
                     })
                     .then(response => {
+                        this.showNotification('success add new feed');
                         if (response.redirected) {
                             window.location.href = response.url;
                             return;
                         }
+
                         return response.text();
                     })
                     .catch(error => {

@@ -152,8 +152,6 @@ class FeedController extends Controller
         ]);
     }
 
-
-
     public function update(Request $request, Feed $feed)
     {
         $request->validate([

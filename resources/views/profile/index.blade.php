@@ -116,7 +116,7 @@
 
             <!-- MODAL NOTIF -->
             <div x-show="notification" x-transition x-text="notification"
-                class="fixed top-4 right-4 bg-white text-black px-4 py-2 rounded shadow"
+                class="fixed top-4 right-4 bg-black text-white px-4 py-2 rounded shadow"
                 x-cloak></div>
 
 
@@ -130,15 +130,13 @@
                         feeds: initialFeeds,
                         notification: '',
                         comment: '',
-                        // liked: initialFeeds.liked_by_auth,
-                        // likesCount: initialLikesCount,                        
 
                         showNotification(message) {
                             this.notification = message;
                             setTimeout(() => this.notification = '', 3000);
                         },
 
-                        openModal(feed) {                            
+                        openModal(feed) {
                             fetch(`/feeds/${feed.id}`)
                                 .then(res => res.json())
                                 .then(freshFeed => {
@@ -285,8 +283,6 @@
                                 .catch(err => console.error('Error deleting comment:', err));
                         },
 
-                        
-
                         async toggleLike(feedId) {
                             fetch(`/feeds/${feedId}/like`, {
                                     method: 'POST',
@@ -304,7 +300,6 @@
                                     console.error('Like toggle failed', error);
                                 });
                         },
-
 
                         init() {
                             const pathParts = window.location.pathname.split('/');
