@@ -1,15 +1,16 @@
 @props([
-    'id' => 'modal',
-    'show' => false, // default hidden
+    'id' => 'modal'
 ])
 
 <div
     id="{{ $id }}"
-    class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center {{ $show ? '' : 'hidden' }}"
-    onclick="document.getElementById('{{ $id }}').classList.add('hidden')"
+    x-show="showModal"
+    x-transition
+    class="w-full fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center"
+    @click.self="toggleModal(false)"
 >
     <div
-        class="bg-white w-fit  rounded-lg shadow-lg relative"
+        class="bg-white w-fit rounded-lg shadow-lg relative"
         onclick="event.stopPropagation()"
     >
         {{-- Header Slot --}}
@@ -29,5 +30,5 @@
     </div>
 
     <!-- BUTTON -->
-    <button class="absolute top-10 right-10 text-white" onclick="toggleModal('createModal', false)">Close</button>
+    <button class="absolute top-10 right-10 text-white" @click="toggleModal(false)">Close</button>
 </div>

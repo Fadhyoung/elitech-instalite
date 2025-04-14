@@ -31,7 +31,7 @@
             </div>
             <div class="flex gap-5">
                 <x-iconoir-plus />
-                <button onclick="toggleModal('createModal')">Create</button>
+                <button onclick="window.postForm.toggleModal(true)">Create</button>
             </div>
         </div>
 
@@ -68,7 +68,7 @@
                     </div>
                     <div class="flex gap-5">
                         <x-iconoir-plus />
-                        <button onclick="toggleModal('createModal')">Create</button>
+                        <button onclick="window.postForm.toggleModal(true)">Create</button>
                     </div>
                 </div>
             </div>
