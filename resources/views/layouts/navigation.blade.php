@@ -15,12 +15,12 @@
                     Profile
                 </button>
             </div>
-            <div class="flex gap-5">
+            <!-- <div class="flex gap-5">
                 <x-iconoir-video-camera />
                 <button onclick="window.location.href='/feeds'">
                     Feeds
                 </button>
-            </div>
+            </div> -->
             <div class="flex gap-5">
                 <x-iconoir-archive />
                 <button onclick="window.location.href='/archive'">
