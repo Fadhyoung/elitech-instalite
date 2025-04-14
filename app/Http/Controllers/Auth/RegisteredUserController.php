@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -44,6 +45,14 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        Setting::create([
+            'user_id' => $user->id,
+            'feeds_per_row' => 3,
+            'feed_columns' => 3,
+            'show_videos' => true,
+            'show_photos' => true,
+        ]);        
 
         event(new Registered($user));
 

@@ -15,29 +15,40 @@ class FeedController extends Controller
         return view('feeds.index', compact('feeds'));
     }
 
-    // Show form to create a new feed
-    public function create()
+    public function create(Request $request)
     {
-        return view('feeds.create');
-    }
-
-    // Handle form submission and save to database
-    public function store(Request $request)
-    {
-
         $request->validate([
             'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4,mov|max:153600',
             'caption' => 'required|string|max:255',
         ]);
 
-        // Store the media file
+        $mediaFile = $request->file('media_path');
+        $mediaPath = $mediaFile->store('uploads', 'public');
+        $mediaType = str_contains($mediaFile->getMimeType(), 'video') ? 'video' : 'photo';
+
+        Feed::create([
+            'user_id' => Auth::id(),
+            'media_path' => $mediaPath,
+            'media_type' => $mediaType,
+            'archived' => false,
+            'caption' => $request->caption ?? 'no caption',
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Post created!']);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'media_path' => 'required|file|mimes:jpg,jpeg,png,mp4,mov|max:153600',
+            'caption' => 'required|string|max:255',
+        ]);
+
         $mediaFile = $request->file('media_path');
         $mediaPath = $mediaFile->store('uploads', 'public');
 
-        // Determine media type
         $mediaType = str_contains($mediaFile->getMimeType(), 'video') ? 'video' : 'photo';
 
-        // Create the feed
         Feed::create([
             'user_id' => Auth::id(),
             'media_path' => $mediaPath,
@@ -49,9 +60,10 @@ class FeedController extends Controller
         return redirect()->route('profile.index')->with('success', 'Post created!');
     }
 
-    public function show(Feed $feed)
+    public function detail(Feed $feed)
     {
-        return view('feeds.show', compact('feed'));
+        $user = Auth::user();
+        return view('feeds.detail', compact('feed', 'user'));
     }
 
     public function edit(Feed $feed)
@@ -61,9 +73,9 @@ class FeedController extends Controller
 
     public function detailFeed($feed_id)
     {
-        // Fetch the feed by its ID
-        $feed = Feed::findOrFail($feed_id); // Assuming your Feed model exists
+
         $user = Auth::user();
+        $feed = Feed::with('comments.user')->findOrFail($feed_id);
 
         return view('profile.index', [
             'feed' => $feed,
@@ -73,8 +85,7 @@ class FeedController extends Controller
 
     public function archive($feedId)
     {
-        // Fetch the feed by its ID
-        $feed = Feed::findOrFail($feedId); // Assuming your Feed model exists
+        $feed = Feed::findOrFail($feedId);
         $user = Auth::user();
         if ($feed->user_id !== $user->id) {
             abort(403);
@@ -134,8 +145,8 @@ class FeedController extends Controller
 
     public function destroy($id)
     {
-        $feed = Feed::findOrFail($id);  // Find the feed by ID
-        $feed->delete();  // Delete the feed from the database
+        $feed = Feed::findOrFail($id);
+        $feed->delete();
 
         return redirect()->route('feeds.index')->with('success', 'Feed deleted successfully');
     }

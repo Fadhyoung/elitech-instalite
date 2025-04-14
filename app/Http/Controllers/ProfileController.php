@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Feed;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,20 +15,17 @@ class ProfileController extends Controller
 
     public function authorize()
     {
-        return true; // You can modify this to restrict certain users if needed
+        return true;
     }
 
     public function index()
     {
         $user = Auth::user();
-        $feeds = Feed::where('user_id', Auth::id())->latest()->get();
+        $feeds = Feed::where('user_id', Auth::id())->with(['comments.user'])->latest()->get();
 
         return view('profile.index', compact('feeds', 'user'));
     }
 
-    /**
-     * Display the user's profile form.
-     */
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -37,9 +33,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
@@ -57,9 +50,6 @@ class ProfileController extends Controller
         return Redirect::route('profile.index')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete the user's account.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
@@ -76,5 +66,16 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function showFeedModal(Feed $feed)
+    {
+        $user = Auth::user();
+        $feeds = Feed::where('user_id', $user->id)->latest()->get();
+
+        return view('profile.show', [
+            'feeds' => $feeds,
+            'selectedFeed' => $feed,
+        ]);
     }
 }

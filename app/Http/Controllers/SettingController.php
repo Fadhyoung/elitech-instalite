@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class SettingController extends Controller
@@ -14,24 +12,46 @@ class SettingController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function index(): View
     {
-        return view('setting.edit', [
-            'user' => $request->user(),
+        $user = Auth::user();
+
+        return view('setting.index', [
+            'user' => $user,
+            'setting' => $user->setting,
         ]);
     }
 
-    public function update(request $request)
+    public function create(Request $request)
     {
-        
         $request->validate([
-            'columns_preference' => 'required|integer|min:2|max:5',
+            'feeds_per_row' => ['required', 'integer', 'min:2', 'max:5'],
         ]);
 
-        $user = $request->user();
-        $user->columns_preference = $request->columns_preference;
-        $user->save();
+        Setting::create([
+            'user_id' => $request->user()->id,
+            'feeds_per_row' => $request->feeds_per_row,
+            'feed_columns' => 3,         // or another logic if needed
+            'show_videos' => true,
+            'show_photos' => true,
+        ]);
 
-        return redirect()->back()->with('success', 'Settings updated successfully!');
+        return redirect()->back()->with('success', 'Feeds per row created successfully!');
+    }
+
+
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'feeds_per_row' => ['required', 'integer', 'min:2', 'max:5'],
+        ]);
+
+        Setting::updateOrCreate(
+            ['user_id' => $request->user()->id],
+            ['feeds_per_row' => $request->feeds_per_row]
+        );
+
+        return redirect()->back()->with('success', 'Feeds per row updated successfully!');
     }
 }
