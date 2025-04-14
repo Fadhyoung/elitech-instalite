@@ -51,33 +51,22 @@
             @else
             <div class="mt-8 px-4">
                 <div x-show="activeTab === 'posts'" class="flex flex-col items-center justify-center text-center py-8">
-                    <form method="POST" action="{{ route('feeds.store') }}" enctype="multipart/form-data" id="uploadForm">
-                        @csrf
 
-                        <input
-                            type="file"
-                            name="media_path"
-                            accept="image/*,video/*"
-                            class="hidden"
-                            id="mediaInput"
-                            onchange="document.getElementById('uploadForm').submit();">
+                    <div class="w-fit border border-gray-300 rounded-full p-4 mb-4 justify-self-center">
+                        <x-iconoir-camera class="h-8 w-8 text-gray-900" />
+                    </div>
 
-                        <div class="w-fit border border-gray-300 rounded-full p-4 mb-4 justify-self-center">
-                            <x-iconoir-camera class="h-8 w-8 text-gray-900" />
-                        </div>
+                    <h3 class="text-2xl font-bold mb-2">Share Photos</h3>
+                    <p class="text-gray-600 text-center mb-4">
+                        When you share photos, they will appear on your profile.
+                    </p>
 
-                        <h3 class="text-2xl font-bold mb-2">Share Photos</h3>
-                        <p class="text-gray-600 text-center mb-4">
-                            When you share photos, they will appear on your profile.
-                        </p>
-
-                        <button
-                            type="button"
-                            class="text-blue-500 font-semibold"
-                            onclick="document.getElementById('mediaInput').click();">
-                            Share your first photo
-                        </button>
-                    </form>
+                    <button
+                        type="button"
+                        class="text-blue-500 font-semibold"
+                        onclick="window.postForm.toggleModal(true)">
+                        Share your first photo
+                    </button>
 
                 </div>
 

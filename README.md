@@ -46,6 +46,7 @@ mysql -u root -p -e "CREATE DATABASE instalite;"
 To set up your tables and seed the database:
 ```
 php artisan migrate:fresh --seed
+php artisan storage:link
 ```
 
 ## 🔥 Run the App
