@@ -36,6 +36,10 @@ Update your mysql username and password
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
+Create the database
+```
+mysql -u root -p -e "CREATE DATABASE instalite;"
+```
 
 ## 🗃️ Run Migrations and Seeders
 
