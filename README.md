@@ -18,7 +18,7 @@ Before you begin, make sure you have these installed:
 Clone the repository and install dependencies:
 ```
 git clone git@github.com:Fadhyoung/elitech-instalite.git
-cd your-repo
+cd elitech-instalite
 composer install
 npm install
 
