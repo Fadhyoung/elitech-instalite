@@ -8,25 +8,23 @@
 
     <title>{{ config('app.name', 'Instalite') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- AlpineJS -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="font-sans antialiased">
     <div class="min-h-screen grid lg:grid-cols-6 bg-gray-100 dark:bg-gray-900">
+        <!-- NAVIGATION -->
         <div class="lg:w-1/6 lg:h-screen lg:fixed lg:col-span-1 border-r bg-white
                 w-full h-16 fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center border-t lg:border-t-0 lg:justify-start lg:items-start">
             @include('layouts.navigation')
         </div>
 
-        <!-- Page Heading -->
+        <!-- HEDER -->
         @isset($header)
         <header class="bg-white dark:bg-gray-800 shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -35,15 +33,15 @@
         </header>
         @endisset
 
-        <!-- Page Content -->
+        <!-- CONTENT -->
         <main class="w-full lg:col-start-2 xs:col-start-1 col-span-5">
             {{ $slot }}
         </main>
 
-        <!-- Fullscreen Modal -->
+        <!-- MODAL -->
         <div x-data="createPostForm()" x-init="init()" x-ref="postForm">
             <x-modal id="createModal">
-                {{-- Header --}}
+                <!-- HEADER -->
                 <x-slot name="header">
                     <div class="w-full flex justify-between items-center">
                         <template x-if="step === 1">
@@ -83,9 +81,8 @@
                     </div>
                 </x-slot>
 
-                {{-- Body --}}
+                <!-- BODY -->
                 <x-slot name="body">
-                    <!-- Step 1: Upload -->
                     <div x-show="step === 1" class="lg:w-[500px] lg:h-[500px] xs:w-[250px] xs:h-[250px] p-4 flex flex-col items-center justify-center space-y-4" x-cloak>
                         <div class="w-full flex flex-col items-center space-y-5" x-cloak>
                             <x-iconoir-media-image-plus class="size-16" />
@@ -101,17 +98,14 @@
                         </div>
                     </div>
 
-                    <!-- Modal Content Wrapper -->
                     <div
                         x-show="step === 2 || step === 3"
                         class="flex lg:flex-row xs:flex-col bg-white rounded overflow-hidden transition-all duration-300 ease-in-out"
                         :class="step === 2 ? 'lg:w-[500px] lg:h-[500px] xs:w-[250px] xs:h-[250px]' : 'lg:w-[800px] lg:h-[500px] xs:w-[250px] xs:h-auto'">
-                        <!-- Image Section -->
                         <div class="">
                             <img :src="image" class="lg:w-[500px] lg:h-[500px] xs:w-[250px] xs:h-[250px] object-cover" />
                         </div>
 
-                        <!-- Caption Section (Step 3 only) -->
                         <div
                             x-show="step === 3"
                             class="flex-1"
@@ -160,7 +154,6 @@
                 reader.readAsDataURL(file);
             },
 
-            // Modified toggleModal to also reset when closing
             toggleModal(show) {
                 this.showModal = show;
                 if (!show) {
@@ -179,13 +172,11 @@
                 this.imageFile = null;
                 this.showModal = false;
 
-                // Reset file input manually
                 if (this.$refs.fileInput) {
                     this.$refs.fileInput.value = null;
                 }
             },
 
-            // Function to submit the post (could be AJAX or form submission)
             submit() {
                 const formData = new FormData();
                 formData.append('media_path', this.imageFile);

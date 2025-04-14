@@ -1,14 +1,15 @@
 <x-app-layout>
     <div class="py-4 flex flex-col min-h-screen bg-white">
 
-        {{-- Profile Header --}}
+        <!-- PROFILE HEADER -->
         @include('profile.partials.profile-bar')
 
+        <!-- TAB FEEDS -->
         <div
             x-data="modalData(@js($feeds))"
             class="w-full max-w-4xl mx-auto mt-10">
 
-            <!-- Tabs Navigation -->
+            <!-- NAVIGATION -->
             <div class="flex w-full justify-center border-b">
                 <button
                     @click="activeTab = 'posts'"
@@ -35,23 +36,19 @@
 
             @if ($feeds && $feeds->isNotEmpty())
 
-            <!-- POSTS TAB -->
             <div x-show="activeTab === 'posts'">
                 @include('profile.partials.posts-tab', ['feeds' => $feeds])
             </div>
 
-            <!-- SAVED / ARCHIVED TAB -->
             <div x-show="activeTab === 'archived'">
                 @include('profile.partials.archived-tab', ['feeds' => $feeds])
             </div>
 
-            <!-- TAGGED TAB -->
             <div x-show="activeTab === 'tagged'" class="w-full py-5 text-center">
                 <p>On progress...</p>
             </div>
 
             @else
-            <!-- No feeds available - display empty content -->
             <div class="mt-8 px-4">
                 <div x-show="activeTab === 'posts'" class="flex flex-col items-center justify-center text-center py-8">
                     <form method="POST" action="{{ route('feeds.store') }}" enctype="multipart/form-data" id="uploadForm">
@@ -100,7 +97,7 @@
             <footer class="mt-auto py-8 text-xs text-gray-500">
                 <div class="max-w-4xl mx-auto px-4">
                     <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-4">
-                        @foreach (['Meta','About','Blog','Jobs','Help','API','Privacy','Terms','Locations','Instagram Lite','Threads','Contact Uploading & Non-Users','Meta Verified','Meta in Indonesia'] as $item)
+                        @foreach (['Fanuhi','About','Blog','Jobs','Help','API','Privacy','Terms','Locations','Instalite Fat','Threads','Contact Uploading & Non-Users','Fanuhi Verified','Fanuhi in Indonesia'] as $item)
                         <a href="#" class="hover:underline">{{ $item }}</a>
                         @endforeach
                     </div>
@@ -108,22 +105,22 @@
                         <select class="bg-transparent text-gray-500 text-xs border-none focus:ring-0">
                             <option>English</option>
                         </select>
-                        <span>© 2025 Instagram from Meta</span>
+                        <span>Inspired by Instagram</span>
+                        <span>© 2025 Instalite from Fanuhi</span>
                     </div>
                 </div>
             </footer>
 
-            <!-- MODAL -->
+            <!-- FEED MODAL -->
             @include('profile.partials.feed-modal')
 
             <!-- MODAL NOTIF -->
             <div x-show="notification" x-transition x-text="notification"
-                class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow"
+                class="fixed top-4 right-4 bg-white text-black px-4 py-2 rounded shadow"
                 x-cloak></div>
 
 
             <!-- ALPINEJS CONFIG -->
-            <!-- Modal Management with Alpine.js -->
             <script>
                 function modalData(initialFeeds) {
                     return {
@@ -155,7 +152,6 @@
                         },
 
                         closeModal() {
-                            // Close the modal and revert the URL to the previous one
                             this.showModal = false;
                             history.pushState(null, '', '/profile');
                         },
@@ -176,7 +172,6 @@
 
                                     history.pushState({}, '', '/profile');
 
-                                    // Show a toast/notification - here's a simple example
                                     this.showNotification(data.message);
 
                                 })
@@ -257,10 +252,8 @@
                                 .then(res => res.json())
                                 .then(data => {
                                     if (data.success) {
-                                        // Push the new comment into selectedFeed.comments
                                         this.selectedFeed.comments.push(data.comment);
 
-                                        // Clear the input
                                         this.comment = '';
                                     } else {
                                         console.error('Comment not saved:', data.message || data);
@@ -291,11 +284,9 @@
                         },
 
                         init() {
-                            // Initialize modal state based on URL
                             const pathParts = window.location.pathname.split('/');
                             const feedId = pathParts[pathParts.length - 1];
-                            if (feedId && !isNaN(feedId)) {
-                                // Fetch the feed by ID (in real-world, you'd probably want to fetch it from an API or database)
+                            if (feedId && !isNaN(feedId)) {                                
                                 this.openModal(feedId);
                             }
 
@@ -304,7 +295,6 @@
                                 this.showModal = isFeedRoute;
                             });
 
-                            // Listen for changes in the browser history (back/forward navigation)
                             window.addEventListener('popstate', (event) => {
                                 if (event.state && event.state.feedId) {
                                     this.openModal(event.state.feedId);

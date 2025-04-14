@@ -1,9 +1,7 @@
 <nav x-data="{ open: false }" class="w-full h-full bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
     <div class="w-full h-full p-5 flex lg:flex-col xs:flex-row justify-between lg:items-start xs:items-center">
 
         <div class="lg:flex xs:hidden flex-col gap-7">
-            <!-- Logo -->
             <div class="w-full">
                 <img src="{{ asset('images/img_instalite.png') }}"
                     alt="Instagram Mobile Mockup"
@@ -35,7 +33,7 @@
             </div>
         </div>
 
-        <!-- Hamburger -->
+        <!-- HAMBURGER -->
         <div class="relative xs:flex lg:hidden">
             <div class="-me-2 flex items-center lg:hidden">
                 <button onclick="document.getElementById('customDropdown2').classList.toggle('hidden')"
@@ -74,7 +72,7 @@
             </div>
         </div>
 
-        <!-- Setting Dropdown -->
+        <!-- SETTING -->
         <div class=" relative">
             <button onclick="document.getElementById('customDropdown').classList.toggle('hidden')"
                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition">
@@ -94,39 +92,5 @@
             </div>
         </div>
         
-    </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.index')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
     </div>
 </nav>

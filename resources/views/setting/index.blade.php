@@ -25,7 +25,6 @@
                             <option value="3" {{ $setting->feeds_per_row == 3 ? 'selected' : '' }}>3 Feeds</option>
                             <option value="4" {{ $setting->feeds_per_row == 4 ? 'selected' : '' }}>4 Feeds</option>
                             <option value="5" {{ $setting->feeds_per_row == 5 ? 'selected' : '' }}>5 Feeds</option>
-                            <!-- Add more options as necessary -->
                         </select>
                     </div>
 

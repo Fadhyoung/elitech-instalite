@@ -8,13 +8,9 @@ use App\Exports\FeedExport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
-use PDF;
 
 class ArchiveController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
     public function index()
     {
         $query = Feed::with('user.profile')

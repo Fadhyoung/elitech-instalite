@@ -2,7 +2,7 @@
     <div class="container max-w-4xl mx-auto px-4 py-6 space-y-10">
         <div class="lg:px-10 xs:px-0 flex lg:gap-20 xs:gap-5 lg:flex-row xs:flex-col items-center">
 
-            {{-- Profile Picture --}}
+            <!-- PROFILE PICTURE -->
             <div class="relative">
                 <div class="w-20 h-20 md:w-36 md:h-36 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-300 flex items-center justify-center">
                     @if (auth()->user()->photo_profile)
@@ -16,7 +16,7 @@
                 </div>
             </div>
 
-            {{-- Profile Info --}}
+            <!-- PROFILE INFO -->
             <div class="w-full flex flex-col lg:gap-0 xs:gap-5">
                 <div class="w-full flex flex-col md:flex-row items-center md:items-start gap-4 ">
                     <h1 class="text-xl font-normal">{{ Auth::user()->username ?? 'username' }}</h1>
@@ -31,7 +31,6 @@
                     </div>
                 </div>
 
-                {{-- Stats --}}
                 <div class="lg:flex xs:hidden justify-center md:justify-start gap-8 my-4">
                     <div class="flex gap-1">
                         <span class="font-semibold">0</span> posts
@@ -44,7 +43,6 @@
                     </div>
                 </div>
 
-                {{-- Name --}}
                 <div class="text-center md:text-left">
                     <h2 class="font-semibold">{{ Auth::user()->bio }}</h2>
                 </div>

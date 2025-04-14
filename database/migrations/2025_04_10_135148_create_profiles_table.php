@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('username')->unique();
             $table->string('bio')->nullable();
-            $table->string('avatar')->nullable(); // path to profile image
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

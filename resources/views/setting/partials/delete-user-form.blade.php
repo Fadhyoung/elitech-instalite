@@ -13,7 +13,7 @@
         {{ __('Delete Account') }}
     </x-danger-button>
 
-    <!-- Modal -->
+    <!-- MODAL -->
     <div
         x-show="confirmDeleteOpen"
         x-cloak

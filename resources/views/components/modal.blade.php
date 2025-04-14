@@ -13,17 +13,17 @@
         class="bg-white w-fit rounded-lg shadow-lg relative"
         onclick="event.stopPropagation()"
     >
-        {{-- Header Slot --}}
+        <!-- HEADER -->
         <div class="w-full h-full">
             {{ $header ?? '' }}
         </div>
 
-        {{-- Body Slot --}}
+        <!-- BODY -->
         <div class="w-full h-full">
             {{ $body ?? '' }}
         </div>
 
-        {{-- Footer Slot --}}
+        <!-- FOOTER -->
         <div class="flex justify-end">
             {{ $footer ?? '' }}
         </div>        

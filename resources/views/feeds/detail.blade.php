@@ -17,9 +17,7 @@
             <!-- RIGHT SIDE -->
             <div class="h-full relative flex flex-col gap-0">
 
-                <!-- Caption and content -->
                 <div class="h-full flex flex-col gap-0 flex-grow bg">
-                    <!-- Main caption -->
                     <div class="p-4 flex items-start gap-2 border-b">
                         <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                             @if ($user)
@@ -49,7 +47,6 @@
                                 <p>{{ $comment->comment }}</p>
                             </div>
 
-                            <!-- Delete Button (only shown when hovering) -->
                             <button @click="deleteComment({{ $comment->id }})" class="absolute right-2 top-2 text-red-500 hover:text-red-700 text-xs hidden group-hover:inline">
                                 Delete
                             </button>
@@ -63,16 +60,13 @@
 
                 <!-- COMMENT SECTION -->
                 <div class="flex flex-col">
-                    <!-- Action buttons and likes -->
                     <div class="flex justify-between mb-2 border-t p-4">
                         <div class="flex gap-4">
                             @if ($feed->archived)
-                            <!-- Unarchive Button (only show if archived) -->
                             <button @click="unarchiveFeed({{ $feed->id }})" class="text-gray-500 hover:text-gray-700">
                                 Unarchive
                             </button>
                             @else
-                            <!-- Archive Button (only show if not archived) -->
                             <button @click="archiveFeed({{ $feed->id }})" class="text-gray-500 hover:text-gray-700">
                                 Archive
                             </button>
