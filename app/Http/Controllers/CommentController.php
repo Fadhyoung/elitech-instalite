@@ -1,6 +1,5 @@
 <?php
 
-// In CommentController.php
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
@@ -23,7 +22,7 @@ class CommentController extends Controller
             'comment' => $request->comment,
         ]);
 
-        $comment->load('user'); // in case you're showing user info too
+        $comment->load('user');
 
         return response()->json([
             'success' => true,

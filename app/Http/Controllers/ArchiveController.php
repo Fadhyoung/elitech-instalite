@@ -21,12 +21,10 @@ class ArchiveController extends Controller
             ->where('archived', true)
             ->where('user_id', Auth::id());
 
-        // Apply "from" date filter if provided
         if (request('from')) {
             $query->whereDate('created_at', '>=', request('from'));
         }
 
-        // Apply "to" date filter if provided
         if (request('to')) {
             $query->whereDate('created_at', '<=', request('to'));
         }
@@ -36,13 +34,11 @@ class ArchiveController extends Controller
         return view('archive.index', compact('feeds'));
     }
 
-    // Export to XLSX
     public function exportXlsx()
     {
         return Excel::download(new FeedExport, 'feeds.xlsx');
     }
 
-    // Export to PDF
     public function exportPDF(Request $request)
     {
         $feeds = Feed::query()

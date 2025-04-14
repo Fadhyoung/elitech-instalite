@@ -22,6 +22,24 @@ class SettingController extends Controller
         ]);
     }
 
+    public function create(Request $request)
+    {
+        $request->validate([
+            'feeds_per_row' => ['required', 'integer', 'min:2', 'max:5'],
+        ]);
+
+        Setting::create([
+            'user_id' => $request->user()->id,
+            'feeds_per_row' => $request->feeds_per_row,
+            'feed_columns' => 3,         // or another logic if needed
+            'show_videos' => true,
+            'show_photos' => true,
+        ]);
+
+        return redirect()->back()->with('success', 'Feeds per row created successfully!');
+    }
+
+
 
     public function update(Request $request)
     {
@@ -36,5 +54,4 @@ class SettingController extends Controller
 
         return redirect()->back()->with('success', 'Feeds per row updated successfully!');
     }
-
 }

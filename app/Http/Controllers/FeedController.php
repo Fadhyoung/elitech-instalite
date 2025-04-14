@@ -15,7 +15,6 @@ class FeedController extends Controller
         return view('feeds.index', compact('feeds'));
     }
 
-    // Show form to create a new feed
     public function create(Request $request)
     {
         $request->validate([
@@ -23,14 +22,10 @@ class FeedController extends Controller
             'caption' => 'required|string|max:255',
         ]);
 
-        // Store the media file
         $mediaFile = $request->file('media_path');
         $mediaPath = $mediaFile->store('uploads', 'public');
-
-        // Determine media type
         $mediaType = str_contains($mediaFile->getMimeType(), 'video') ? 'video' : 'photo';
 
-        // Create the feed
         Feed::create([
             'user_id' => Auth::id(),
             'media_path' => $mediaPath,
@@ -42,7 +37,6 @@ class FeedController extends Controller
         return response()->json(['success' => true, 'message' => 'Post created!']);
     }
 
-    // Handle form submission and save to database
     public function store(Request $request)
     {
         $request->validate([
@@ -50,14 +44,11 @@ class FeedController extends Controller
             'caption' => 'required|string|max:255',
         ]);
 
-        // Store the media file
         $mediaFile = $request->file('media_path');
         $mediaPath = $mediaFile->store('uploads', 'public');
 
-        // Determine media type
         $mediaType = str_contains($mediaFile->getMimeType(), 'video') ? 'video' : 'photo';
 
-        // Create the feed
         Feed::create([
             'user_id' => Auth::id(),
             'media_path' => $mediaPath,
@@ -94,8 +85,7 @@ class FeedController extends Controller
 
     public function archive($feedId)
     {
-        // Fetch the feed by its ID
-        $feed = Feed::findOrFail($feedId); // Assuming your Feed model exists
+        $feed = Feed::findOrFail($feedId);
         $user = Auth::user();
         if ($feed->user_id !== $user->id) {
             abort(403);
@@ -155,8 +145,8 @@ class FeedController extends Controller
 
     public function destroy($id)
     {
-        $feed = Feed::findOrFail($id);  // Find the feed by ID
-        $feed->delete();  // Delete the feed from the database
+        $feed = Feed::findOrFail($id);
+        $feed->delete();
 
         return redirect()->route('feeds.index')->with('success', 'Feed deleted successfully');
     }
