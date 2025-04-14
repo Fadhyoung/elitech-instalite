@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Feed;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class FeedController extends Controller
 {
@@ -64,6 +65,12 @@ class FeedController extends Controller
     {
         $user = Auth::user();
         return view('feeds.detail', compact('feed', 'user'));
+    }
+
+    public function show(Feed $feed)
+    {
+        $feed->load(['comments.user']);        
+        return response()->json($feed);
     }
 
     public function edit(Feed $feed)

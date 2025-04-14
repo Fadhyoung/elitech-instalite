@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\SettingController;
+use App\Models\Feed;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/feeds/store', [FeedController::class, 'store'])->name('feeds.store');
     Route::post('/feeds', [FeedController::class, 'store'])->name('feeds.store');
     Route::get('/p/{feed}', [FeedController::class, 'detail']);
+    Route::get('/feeds/{feed}', [FeedController::class, 'show']);
     Route::post('/feeds/{feed}/archive', [FeedController::class, 'archive'])->name('feeds.archive');
     Route::post('/feeds/{feed}/unarchive', [FeedController::class, 'unarchive'])->name('feeds.unarchive');
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');

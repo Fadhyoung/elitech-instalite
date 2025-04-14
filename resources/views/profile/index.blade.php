@@ -136,19 +136,18 @@
                         },
 
                         openModal(feed) {
-                            this.selectedFeed = {
-                                id: feed.id,
-                                caption: feed.caption,
-                                media_path: feed.media_path,
-                                media_type: feed.media_type,
-                                archived: feed.archived,
-                                comments: feed.comments,
-                            };
-
-                            this.showModal = true;
-                            history.pushState({
-                                feedId: feed.id
-                            }, '', `/p/${feed.id}`);
+                            fetch(`/feeds/${feed.id}`)
+                                .then(res => res.json())
+                                .then(freshFeed => {
+                                    this.selectedFeed = freshFeed;
+                                    this.showModal = true;
+                                    history.pushState({
+                                        feedId: freshFeed.id
+                                    }, '', `/p/${freshFeed.id}`);
+                                })
+                                .catch(err => {
+                                    console.error('Failed to fetch updated feed:', err);
+                                });
                         },
 
                         closeModal() {
@@ -221,12 +220,11 @@
                                         '_method': 'DELETE',
                                     })
                                 })
-                                .then(response => {                                    
+                                .then(response => {
                                     if (!response.ok) throw new Error('Delete failed');
-                                    console.log('Redirecting to profile...');
                                     this.selectedFeed = null;
                                     this.showModal = false;
-                                    window.location.href = '/profile';
+                                    window.location.assign('/profile');
                                 })
                                 .catch(error => {
                                     console.error(error);
@@ -286,7 +284,7 @@
                         init() {
                             const pathParts = window.location.pathname.split('/');
                             const feedId = pathParts[pathParts.length - 1];
-                            if (feedId && !isNaN(feedId)) {                                
+                            if (feedId && !isNaN(feedId)) {
                                 this.openModal(feedId);
                             }
 

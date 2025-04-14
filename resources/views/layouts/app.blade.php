@@ -39,7 +39,7 @@
         </main>
 
         <!-- MODAL -->
-        <div x-data="createPostForm()" x-init="init()" x-ref="postForm">
+        <div x-data="createPostForm()" x-init="init()" x-ref="postForm" x-cloak>
             <x-modal id="createModal">
                 <!-- HEADER -->
                 <x-slot name="header">
@@ -202,7 +202,6 @@
                         toggleModal('createModal', false);
                     });
             }
-
         }
     }
 </script>
