@@ -19,6 +19,7 @@ class FeedExport implements FromView
     public function view(): View
     {
         $feeds = Feed::query()
+            ->with('comments')
             ->when($this->date, fn($q) => $q->whereDate('created_at', $this->date))
             ->where('archived', true)
             ->where('user_id', Auth::id())
